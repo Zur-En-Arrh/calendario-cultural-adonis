@@ -1,0 +1,10 @@
+@layout('layouts/index')
+@section('conteudo')
+<div>
+    <h2>Cadastro</h2>
+    <form action="{{route('usuario.store')}}" method="post">
+        <input type="text" name="nome"/>
+        <button type="submit">salvar</button>
+    </form>
+</div>
+@endsection
