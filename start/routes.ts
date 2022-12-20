@@ -23,9 +23,15 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
+Route.group(() => {
+  Route.get('/editar', 'UsuariosController.edit').as('usuario.edit')
+  Route.get('/logout', 'AuthController.logout').as('auth.logout')
 
-Route.get('/cadastro', 'UsuariosController.create')
+}).middleware('auth:web')
+
+Route.get('/cadastro', 'UsuariosController.create').as('usuario.create')
 Route.post('/cadastro', 'UsuariosController.store').as('usuario.store')
-Route.get('/login', async ({view}) => {
-  return view.render('login')
-})
+Route.get('/login', 'AuthController.create').as('auth.create')
+
+Route.post('/login', 'AuthController.store').as('auth.store')
+

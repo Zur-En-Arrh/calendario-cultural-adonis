@@ -1,0 +1,21 @@
+<div class="form-group">
+  <label for={{name}}>{{label}}</label>
+  <select class="form-control
+
+  @if(flashMessages.has('errors.'+name))
+    border-danger
+  @endif
+
+  " name={{name}} id="">
+      @each(opt in options)
+          <option
+          @if(auth.isLoggedIn && auth.user[`${name}`] == opt)
+              selected
+          @endif
+          value={{opt}}>{{opt}}</option>
+      @end
+  </select>
+
+  @!error({name})
+
+</div>

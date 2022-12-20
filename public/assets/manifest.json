@@ -1,4 +1,8 @@
 {
   "assets/app.css": "http://localhost:8080/assets/app.css",
-  "assets/app.js": "http://localhost:8080/assets/app.js"
+  "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/images/bg1.jpg": "http://localhost:8080/assets/images/bg1.fb9ff1c4.jpg",
+  "assets/images/travel4.jpg": "http://localhost:8080/assets/images/travel4.8aaa1d69.jpg",
+  "assets/images/travel.jpg": "http://localhost:8080/assets/images/travel.be14e36a.jpg",
+  "assets/images/travel5.jpg": "http://localhost:8080/assets/images/travel5.3e88910d.jpg"
 }

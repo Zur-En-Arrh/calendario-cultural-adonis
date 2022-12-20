@@ -4,10 +4,104 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titulo</title>
+    <title>Calendário Cultural</title>
+
+    @entryPointScripts('app')
+    @entryPointStyles('app')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
 </head>
 <body>
-    <h1>Página Principal</h1>
+
+    <div class="wrapper" id="menu">
+
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="bg-rio" style="z-index: 2000 !important; overflow-x: hidden !important; overflow-y: hidden !important; " >
+
+             <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+
+            <div class="sidebar-header bg-purple" >
+                    <h3 class="mt-2"> <i class="fa fa-map-signs text-warning"></i>&nbsp; Calendário de Eventos Rio </h3>
+            </div>
+
+            <ul class="list-unstyled components ml-2">
+              @if(auth.isLoggedIn)
+                <li>
+                    <a class="nav-link" href="{{route('auth.logout')}}"> <i class="fa fa-arrow-left fa-lg"></i>&nbsp; Sair</a>
+                </li>
+              @else
+                <li>
+                    <a class="nav-link" href="{{route('auth.create')}}"> <i class="fa fa-user-circle fa-lg"></i>&nbsp; Login</a>
+                </li>
+
+                <li>
+                    <a class="nav-link" href="{{route('usuario.create')}}"> <i class="fa fa-arrow-right fa-lg"></i>&nbsp; Cadastrar</a>
+                </li>
+              @endif
+
+            </ul>
+        </nav>
+
+        <nav class="navbar navbar-expand-lg bg-warning fixed-top" style="z-index: 10 !important;">
+                <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn text-white bg-purple">
+                <i class="fas fa-align-justify"></i>
+                </button>
+
+                <h2 class="text-purple" style="margin: 0 auto; margin-left: 7.5%;"> <i class="fa fa-calendar"></i> Eventos Rio </h2>
+
+                </div>
+            </nav>
+    </div>
+
+
+
+  <div id="content" class="bg-travel" >
+
+
+    <section class="mt-4">
+
     @!section('conteudo')
+
+    </section>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.2.slim.js"
+      integrity="sha256-OflJKW8Z8amEUuCaflBZJ4GOg4+JnNh9JdVfoV+6biw="
+      crossorigin="anonymous"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').addClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+
 </body>
 </html>
