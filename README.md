@@ -1,5 +1,17 @@
 # calendario-cultural-adonis
 
-Primeiramente instale as dependências com: npm i
-Depois, rode as migrações: node ace migration:run
-Enfim, execute o projeto: node ace serve
+<p>
+Primeiramente instale as dependências com: 
+</p>
+<h1> npm i </h1>
+
+<p>
+Depois, rode as migrações:
+<p>
+<h1>  node ace migration:run </h1>
+</p>
+
+<p>
+Enfim, execute o projeto: 
+</p>
+<h1>  node ace serve </h1> 
