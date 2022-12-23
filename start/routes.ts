@@ -34,4 +34,3 @@ Route.post('/cadastro', 'UsuariosController.store').as('usuario.store')
 Route.get('/login', 'AuthController.create').as('auth.create')
 
 Route.post('/login', 'AuthController.store').as('auth.store')
-

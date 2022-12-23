@@ -25,7 +25,6 @@ export default class Usuario extends BaseModel {
       let dia = data.getDate()
       let mesString = mes.toString()
       let diaString = dia.toString()
-      console.log("para para para", data.getFullYear()+"-"+data.getMonth()+"-"+data.getDate())
       if(mes < 10)
         mesString = "0"+mes
       if(dia < 10)
