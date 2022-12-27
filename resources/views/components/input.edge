@@ -6,8 +6,9 @@
     border-danger
    @endif
    "
+
   @if(auth.isLoggedIn)
-    value="{{auth.user[`${name}`]}}"
+    value="{{--auth.user[`${name}`]--}}"
   @endif
   />
 
