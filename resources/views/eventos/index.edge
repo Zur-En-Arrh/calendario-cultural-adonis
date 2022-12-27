@@ -1,0 +1,12 @@
+@layout('layouts/index')
+@section('conteudo')
+  @each(evento in eventos)
+    <h1>{{evento.nome}}</h1>
+    <p>{{evento.frequencia}}</p>
+    <p>{{evento.cidade}}</p>
+    <img src="images/{{evento.foto}}" width="300px" height="250px" alt="Imagem"/>
+    <hr>
+  @end
+
+  <a href="{{route('eventos.create')}}" class="btn btn-primary">Criar novo evento</a>
+@endsection

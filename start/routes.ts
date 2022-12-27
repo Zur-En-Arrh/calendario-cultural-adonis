@@ -29,6 +29,16 @@ Route.group(() => {
 
 }).middleware('auth:web')
 
+Route.group(() => {
+  Route.get('/create', 'EventosController.create').as('eventos.create')
+  Route.post('/store', 'EventosController.store').as('eventos.store')
+  Route.get('/', 'EventosController.index').as('eventos.index')
+})
+  .middleware('auth:web')
+  .prefix('eventos')
+
+
+
 Route.get('/cadastro', 'UsuariosController.create').as('usuario.create')
 Route.post('/cadastro', 'UsuariosController.store').as('usuario.store')
 Route.get('/login', 'AuthController.create').as('auth.create')
