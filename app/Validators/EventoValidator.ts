@@ -30,8 +30,7 @@ export default class EventoValidator {
     foto: schema.file({
       size: '5mb',
       extnames: ['png', 'jpg']
-    })
-
+    }, [rules.nullable()])
   })
 
   /**

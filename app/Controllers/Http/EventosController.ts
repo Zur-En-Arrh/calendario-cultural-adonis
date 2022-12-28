@@ -22,7 +22,7 @@ export default class EventosController {
     const id = params.id
     const eventoPayload = await request.validate(EventoValidator)
 
-    if(id) 
+    if(id)
     {
       const evento = await Evento.find(id)
       evento.nome = eventoPayload.nome
