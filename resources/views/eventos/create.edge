@@ -1,15 +1,27 @@
 @layout('layouts/index')
 @section('conteudo')
-  <form action="{{route('eventos.store')}}" enctype="multipart/form-data" method="post">
-    @!input({label: 'Nome', name: 'nome'})
 
-    @!input({label: 'Cidade', name: 'cidade'})
+  <form action=" 
+      @if(evento)
+        {{route('eventos.update', {id:evento.id} )}} 
+      @else 
+        {{route('eventos.store')}} 
+      @endif
+    " enctype="multipart/form-data" method="post">
+    
+    @if(evento)
+      @!input({label: 'Nome', name: 'nome', evento})
+      @!input({label: 'Cidade', name: 'cidade', evento})
+      @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], selected:evento.frequencia})
+      <img src="images/{{evento.foto}}" width="300px" height="250px" alt="Imagem"/>
+    @else 
+      @!input({label: 'Nome', name: 'nome' })
+      @!input({label: 'Cidade', name: 'cidade' })
+      @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
+      @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
+    @endif
 
-    @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
-
-    @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
-
-
+    
     <button class="btn btn-success" type="submit">Salvar</button>
   </form>
 @endsection

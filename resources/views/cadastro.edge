@@ -29,7 +29,11 @@
 
           @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento'})
 
-          @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino']})
+          @if(auth.isLoggedIn)
+            @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], selected:auth.user.sexo})
+          @else
+            @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino']})
+          @endif
 
 
           <button type="submit" class="btn bg-purple text-white mt-4 mb-3 btn-lg ">

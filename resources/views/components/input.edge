@@ -6,10 +6,12 @@
     border-danger
    @endif
    "
-
-  @if(auth.isLoggedIn)
+  @if(evento)
+    value="{{evento[`${name}`]}}"
+  @else
     value="{{--auth.user[`${name}`]--}}"
   @endif
+
   />
 
   @!error({name})

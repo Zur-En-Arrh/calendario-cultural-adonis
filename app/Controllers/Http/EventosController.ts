@@ -18,18 +18,44 @@ export default class EventosController {
     return view.render('eventos/create')
   }
 
-  public async store({request, view, response}) : HttpContextContract {
+  public async store({request, view, response, params}) : HttpContextContract {
+    const id = params.id
     const eventoPayload = await request.validate(EventoValidator)
-    eventoPayload.foto.clientName = new Date().getTime().toString()+'.'+eventoPayload.foto.extname
 
-    await Evento.create({
-      nome: eventoPayload.nome,
-      frequencia: eventoPayload.frequencia,
-      cidade: eventoPayload.cidade,
-      foto: eventoPayload.foto.clientName
-    })
+    if(id) 
+    {
+      const evento = await Evento.find(id)
+      evento.nome = eventoPayload.nome
+      evento.cidade = eventoPayload.cidade
+      evento.frequencia = eventoPayload.frequencia
+      evento.save()
+      return response.redirect().toRoute('eventos.index')
+    } else {
+      eventoPayload.foto.clientName = new Date().getTime().toString()+'.'+eventoPayload.foto.extname
+      await Evento.create({
+        nome: eventoPayload.nome,
+        frequencia: eventoPayload.frequencia,
+        cidade: eventoPayload.cidade,
+        foto: eventoPayload.foto.clientName
+      })
+      await eventoPayload.foto.move(Application.publicPath('images'))
+      return response.redirect().toRoute('eventos.index')
+    }
 
-    await eventoPayload.foto.move(Application.publicPath('images'))
-    return response.redirect().toRoute('eventos.create')
+
   }
+
+  public async edit({view, params}) : HttpContextContract {
+    const evento = await Evento.find(params.id)
+    return view.render('eventos/create', {evento})
+
+  }
+
+  public async destroy({params, response}) : HttpContextContract {
+    const evento = await Evento.find(params.id)
+    await evento.delete()
+    return response.redirect().toRoute('eventos.index')
+  }
+
+
 }

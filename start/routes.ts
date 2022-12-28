@@ -32,6 +32,9 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/create', 'EventosController.create').as('eventos.create')
   Route.post('/store', 'EventosController.store').as('eventos.store')
+  Route.get('/edit/:id', 'EventosController.edit').as('eventos.edit')
+  Route.get('/delete/:id', 'EventosController.destroy').as('eventos.delete')
+  Route.post('/update/:id', 'EventosController.store').as('eventos.update')
   Route.get('/', 'EventosController.index').as('eventos.index')
 })
   .middleware('auth:web')

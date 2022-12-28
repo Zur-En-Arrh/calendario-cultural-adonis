@@ -9,7 +9,7 @@
   " name={{name}} id="">
       @each(opt in options)
           <option
-          @if(auth.isLoggedIn && auth.user[`${name}`] == opt)
+          @if(selected == opt)
               selected
           @endif
           value={{opt}}>{{opt}}</option>
