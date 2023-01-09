@@ -19,9 +19,13 @@ export default class EventosController {
       }
     })
     console.log(tipos)
+
+    const categorias = await Tipo.all()
+    const tiposIds = categorias.map(tipo => tipo.id)
+    const tiposNomes = categorias.map(tipo => tipo.nome)
     const path = Application.tmpPath('/uploads')
     //return view.render('eventos/index', {eventos, path})
-    return view.render('eventos', {path, tipos})
+    return view.render('eventos', {path, tipos, tiposIds, tiposNomes})
   }
 
   public async foto({view, response, params}) : HttpContextContract {
