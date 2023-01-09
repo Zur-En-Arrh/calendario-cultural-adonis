@@ -30,5 +30,10 @@
   "assets/images/user.jpg": "http://localhost:8080/assets/images/user.7cfc4bf3.jpg",
   "assets/images/elemento.jpg": "http://localhost:8080/assets/images/elemento.3762eb99.jpg",
   "assets/images/brands.png": "http://localhost:8080/assets/images/brands.64e7f367.png",
-  "assets/images/estrelas.png": "http://localhost:8080/assets/images/estrelas.d3eb5f04.png"
+  "assets/images/estrelas.png": "http://localhost:8080/assets/images/estrelas.d3eb5f04.png",
+  "assets/images/nucleo-icons.svg": "http://localhost:8080/assets/images/nucleo-icons.01ebecaf.svg",
+  "assets/fonts/nucleo-icons.eot": "http://localhost:8080/assets/fonts/nucleo-icons.19abb540.eot",
+  "assets/fonts/nucleo-icons.ttf": "http://localhost:8080/assets/fonts/nucleo-icons.d6a66724.ttf",
+  "assets/fonts/nucleo-icons.woff": "http://localhost:8080/assets/fonts/nucleo-icons.c82c9b7c.woff",
+  "assets/fonts/nucleo-icons.woff2": "http://localhost:8080/assets/fonts/nucleo-icons.cba26748.woff2"
 }

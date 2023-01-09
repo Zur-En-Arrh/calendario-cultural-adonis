@@ -7,12 +7,18 @@
   @endif
 
   " name={{name}} id="">
-      @each(opt in options)
+      @each((opt, index) in options)
           <option
           @if(selected == opt)
               selected
           @endif
-          value={{opt}}>{{opt}}</option>
+          value={{opt}}>
+            @if(texts)
+            {{texts[index]}}
+            @else
+            {{opt}}
+            @endif
+          </option>
       @end
   </select>
 

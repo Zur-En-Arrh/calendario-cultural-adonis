@@ -2,7 +2,9 @@ import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class EventoValidator {
-  constructor(protected ctx: HttpContextContract) {}
+  constructor(protected ctx: HttpContextContract) {
+
+  }
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -27,10 +29,11 @@ export default class EventoValidator {
     nome: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
     cidade: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
     frequencia: schema.enum(['quinzenal', 'mensal', 'anual']),
-    foto: schema.file({
+    tipoId: schema.number(),
+    foto: schema.file.optional({
       size: '5mb',
       extnames: ['png', 'jpg']
-    }, [rules.nullable()])
+    })
   })
 
   /**

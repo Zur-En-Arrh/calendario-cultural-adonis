@@ -1,0 +1,58 @@
+@layout('layouts/index')
+@section('conteudo')
+
+    <form method="post" action="{{route('usuario.store')}}" class="form-login text-center">
+        <h1 class="h1 text-purple text-center"> <i class="fa fa-id-card fa-lg"></i></h1>
+        <h1 class="h2 text-purple text-center mt-3 font-weight-bold">
+          @if(auth.isLoggedIn)
+            Editar Perfil
+          @else
+            Cadastre-se
+          @endif
+        </h1>
+
+            @if(auth.isLoggedIn)
+              <input type="hidden" name="id" value="{{auth.user.id}}"/>
+              <input type="hidden" name="password" value="{{auth.user.password}}"/>
+
+              @!input({name: 'email', type: 'email', label: 'E-mail', value: auth.user})
+
+
+              @!input({name: 'nome', label: 'Nome', value: auth.user})
+
+
+              @!input({name: 'sobrenome', label: 'Sobrenome', value: auth.user})
+
+              @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento', value: auth.user})
+
+
+              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], selected:auth.user.sexo})
+
+              <button type="submit" class="btn bg-purple text-white mt-4 mb-3 btn-lg ">Salvar</button>
+              <br/>
+              <label class="justify-content-center mt-4 mb-4"> Quer entrar em outra conta? </br> <a class="font-weight-bold text-purple" href="{{route('auth.logout')}}"> Sair </a> </label>
+
+            @else
+              @!input({name: 'email', type: 'email', label: 'E-mail'})
+
+
+              @!input({name: 'nome', label: 'Nome'})
+
+
+              @!input({name: 'sobrenome', label: 'Sobrenome'})
+
+              @!input({name: 'password', type: 'password', label: 'Senha'})
+
+              @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento'})
+
+              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino']})
+
+              <button type="submit" class="btn bg-purple text-white mt-4 mb-3 btn-lg ">Cadastrar</button>
+              <br/>
+              <label class="justify-content-center mt-4 mb-4"> Você já tem uma conta? </br> <a class="font-weight-bold text-purple" href="{{route('auth.store')}}"> Fazer Login </a> </label>
+
+            @endif
+
+    </form>
+
+@endsection

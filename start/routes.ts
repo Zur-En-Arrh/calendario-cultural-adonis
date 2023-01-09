@@ -23,6 +23,8 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
+
+Route.get('/images/:name', 'EventosController.foto').as('eventos.foto')
 Route.group(() => {
   Route.get('/editar', 'UsuariosController.edit').as('usuario.edit')
   Route.get('/logout', 'AuthController.logout').as('auth.logout')
@@ -36,9 +38,9 @@ Route.group(() => {
   Route.get('/delete/:id', 'EventosController.destroy').as('eventos.delete')
   Route.post('/update/:id', 'EventosController.store').as('eventos.update')
   Route.get('/', 'EventosController.index').as('eventos.index')
-})
-  .middleware('auth:web')
-  .prefix('eventos')
+}).prefix('eventos')
+
+  //.middleware('auth:web')
 
 
 

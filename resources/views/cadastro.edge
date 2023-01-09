@@ -1,56 +1,64 @@
-@layout('layouts/index')
+@layout('layout')
 @section('conteudo')
+  <!-- Page -->
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('./assets/img/rio-de-janeiro-theme_2.jpg');" loading="lazy">
+    <span class="mask bg-calendario opacity-3"></span>
+    <div class="container my-auto">
+      <div class="row">
+        <div class="col-lg-4 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-calendario shadow-primary border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp; Cadastro</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <form role="form" class="text-start">
 
-    <form method="post" action="{{route('usuario.store')}}" class="form-login text-center">
-        <h1 class="h1 text-purple text-center"> <i class="fa fa-id-card fa-lg"></i></h1>
-        <h1 class="h2 text-purple text-center mt-3 font-weight-bold">
-          @if(auth.isLoggedIn)
-            Editar Perfil
-          @else
-            Cadastre-se
-          @endif
-        </h1>
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Nome</label>
+                  <input type="name" class="form-control">
+                </div>
 
-          @!input({name: 'email', type: 'email', label: 'E-mail'})
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Sobrenome</label>
+                  <input type="name" class="form-control">
+                </div>
 
+                <div class="input-group input-group-outline my-3">
+                <select class="form-control"name="sexo" id="sexo">
+                  <option selected="true" disabled="disabled">Gênero</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                  <option value="O">Outro</option>
+                </select>
+                </div>
 
-          @!input({name: 'nome', label: 'Nome'})
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Data de Nascimento</label>
+                  <input type="date" class="form-control">
+                </div>
 
+                <div class="input-group input-group-outline my-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control">
+                </div>
 
-          @!input({name: 'sobrenome', label: 'Sobrenome'})
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Senha</label>
+                  <input type="password" class="form-control">
+                </div>
 
-          @if(auth.isLoggedIn)
-            <input type="hidden" name="id" value="{{auth.user.id}}"/>
-            <input type="hidden" name="password" value="{{auth.user.password}}"/>
-          @else
-            @!input({name: 'password', type: 'password', label: 'Senha'})
-          @endif
+                <div class="text-center">
+                  <button type="button" class="btn bg-calendario w-100 my-4 mb-2 text-white">Cadastrar</button>
+                </div>
 
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento'})
-
-          @if(auth.isLoggedIn)
-            @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], selected:auth.user.sexo})
-          @else
-            @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino']})
-          @endif
-
-
-          <button type="submit" class="btn bg-purple text-white mt-4 mb-3 btn-lg ">
-            @if(auth.isLoggedIn)
-            Salvar
-            @else
-            Cadastrar
-            @endif
-          </button>
-
-          <br/>
-
-          @if(auth.isLoggedIn)
-            <label class="justify-content-center mt-4 mb-4"> Quer entrar em outra conta? </br> <a class="font-weight-bold text-purple" href="{{route('auth.logout')}}"> Sair </a> </label>
-          @else
-            <label class="justify-content-center mt-4 mb-4"> Você já tem uma conta? </br> <a class="font-weight-bold text-purple" href="{{route('auth.store')}}"> Fazer Login </a> </label>
-          @endif
-        </form>
-
+  <!-- End Page -->
 @endsection

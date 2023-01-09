@@ -6,10 +6,8 @@
     border-danger
    @endif
    "
-  @if(evento)
-    value="{{evento[`${name}`]}}"
-  @else
-    value="{{--auth.user[`${name}`]--}}"
+  @if(value)
+    value="{{value[`${name}`]}}"
   @endif
 
   />
