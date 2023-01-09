@@ -1,5 +1,5 @@
-<div class="form-group">
-  <label for={{name}}>{{label}}</label>
+<div class="input-group input-group-outline my-3">
+  <!-- <label for={{name}}>{{label}}</label> -->
   <select class="form-control
 
   @if(flashMessages.has('errors.'+name))
@@ -7,6 +7,7 @@
   @endif
 
   " name={{name}} id="">
+    <option selected="true" disabled="disabled">{{label}}</option>
       @each((opt, index) in options)
           <option
           @if(selected == opt)
@@ -20,6 +21,7 @@
             @endif
           </option>
       @end
+
   </select>
 
   @!error({name})
