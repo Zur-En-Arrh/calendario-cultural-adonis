@@ -1,0 +1,51 @@
+@layout('../layout.edge')
+@section('conteudo')
+
+<div class="page-header align-items-start min-vh-100" style="background-image: url('../img/rio-de-janeiro-theme_2.jpg');" loading="lazy">
+  <span class="mask bg-calendario opacity-3"></span>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-8 col-12 mx-auto">
+        <div class="card z-index-0 my-8 fadeIn3 fadeInBottom">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-calendario shadow-primary border-radius-lg py-3 pe-1">
+              <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"> <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; Editar Evento</h4>
+            </div>
+          </div>
+          <div class="card-body">
+
+
+            <form action="
+                {{route('eventos.update', {id:evento.id} )}}
+              " enctype="multipart/form-data" method="post">
+
+              @!input({label: 'Nome', name: 'nome', value: evento})
+              @!input({label: 'Cidade', name: 'cidade', value: evento})
+              @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], selected:evento.frequencia})
+              @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes, selected: evento.tipoId})
+
+              @!radio({checked: evento.estacionamento, label: 'Estacionamento', name: 'estacionamento', options: [true,false], labels: ['Sim', 'Não']})
+              @!radio({checked: evento.deficiencia, label: 'Acessibilidade para portadores de deficiência física', name: 'deficiencia', options: [true,false], labels: ['Sim', 'Não']})
+              @!radio({checked: evento.medico, label: 'Equipe Médica no local', name: 'medica', options: [true,false], labels: ['Sim', 'Não']})
+              @!radio({checked: evento.banheiro, label: 'Banheiro Público', name: 'banheiro', options: [true,false], labels: ['Sim', 'Não']})
+              @!radio({checked: evento.caixa, label: 'Caixa 24h', name: 'caixa', options: [true,false], labels: ['Sim', 'Não']})
+              @!radio({checked: evento.seguranca, label: 'Segurança no local', name: 'seguranca', options: [true,false], labels: ['Sim', 'Não']})
+
+
+
+              @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
+              <small>Foto atual:</small> <br/>
+              <img src="{{route('eventos.foto', {path: 'public', name:evento.foto})}}" width="300px" height="250px" alt="Imagem"/> <br/>
+
+
+
+              <button type="submit" class="btn btn-save bg-calendario w-100 my-4 mb-2">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection

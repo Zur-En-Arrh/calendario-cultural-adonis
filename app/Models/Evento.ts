@@ -29,6 +29,24 @@ export default class Evento extends BaseModel {
   @column()
   public frequencia: string
 
+  @column()
+  public estacionamento : boolean
+
+  @column()
+  public deficiencia : boolean
+
+  @column()
+  public medico : boolean
+
+  @column()
+  public caixa : boolean
+
+  @column()
+  public banheiro : boolean
+
+  @column()
+  public seguranca : boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

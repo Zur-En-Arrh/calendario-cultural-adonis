@@ -18,7 +18,6 @@ export default class EventosController {
         tipos[e.tipo.nome] = [e]
       }
     })
-    console.log(tipos)
 
     const categorias = await Tipo.all()
     const tiposIds = categorias.map(tipo => tipo.id)
@@ -30,9 +29,13 @@ export default class EventosController {
 
   public async foto({view, response, params}) : HttpContextContract {
     response.header('Content-Type', 'image/gif');
+    let file
+    if(params.path == 'public')
+      file = Application.publicPath(`images/${params.name}`)
+    else
+      file = Application.resourcesPath(`img/${params.name}`)
 
-    return response.download(Application.publicPath(`images/${params.image}`))
-
+    return response.download(file)
   }
 
   public async create({view}) : HttpContextContract {
@@ -45,7 +48,6 @@ export default class EventosController {
   public async store({request, view, response, params}) : HttpContextContract {
     const id = params.id
     const eventoPayload = await request.validate(EventoValidator)
-    console.log(eventoPayload)
     if(id)
     {
       const evento = await Evento.find(id)
@@ -60,6 +62,12 @@ export default class EventosController {
       evento.cidade = eventoPayload.cidade
       evento.frequencia = eventoPayload.frequencia
       evento.tipoId = eventoPayload.tipoId
+      evento.estacionamento = eventoPayload.estacionamento,
+      evento.medico = eventoPayload.medica
+      evento.banheiro = eventoPayload.banheiro
+      evento.deficiencia = eventoPayload.deficiencia
+      evento.seguranca = eventoPayload.seguranca
+      evento.caixa = eventoPayload.caixa
       evento.save()
       return response.redirect().toRoute('eventos.index')
     } else {
@@ -69,12 +77,17 @@ export default class EventosController {
         frequencia: eventoPayload.frequencia,
         cidade: eventoPayload.cidade,
         foto: eventoPayload.foto.clientName,
-        tipoId: eventoPayload.tipoId
+        tipoId: eventoPayload.tipoId,
+        estacionamento: eventoPayload.estacionamento,
+        medico: eventoPayload.medica,
+        banheiro: eventoPayload.banheiro,
+        deficiencia: eventoPayload.deficiencia,
+        seguranca: eventoPayload.seguranca,
+        caixa: eventoPayload.caixa,
       })
       await eventoPayload.foto.move(Application.publicPath('images'))
       return response.redirect().toRoute('eventos.index')
     }
-
 
   }
 
@@ -83,7 +96,7 @@ export default class EventosController {
     const tipos = await Tipo.all()
     const tiposIds = tipos.map(tipo => tipo.id)
     const tiposNomes = tipos.map(tipo => tipo.nome)
-    return view.render('eventos/create', {evento, tiposIds, tiposNomes})
+    return view.render('eventos/edit', {evento, tiposIds, tiposNomes})
 
   }
 
@@ -93,5 +106,10 @@ export default class EventosController {
     return response.redirect().toRoute('eventos.index')
   }
 
+  public async show({view, params}) : HttpContextContract {
+    const evento = await Evento.find(params.id)
+    evento.tipo = await Tipo.find(evento.tipoId)
+    return view.render('eventos/show', {evento})
+  }
 
 }

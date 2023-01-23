@@ -1,7 +1,7 @@
 <div class="input-group input-group-outline my-3">
 
-  <label class="form-label" for={{name}}>{{label}}</label>
-  <input type="{{`${type?type:'text'}`}}" id={{name}} name={{name}} class="form-control
+  <input type="{{`${type?type:'text'}`}}" id={{name}} placeholder={{label}}
+  name={{name}} class="form-control
    @if(flashMessages.has('errors.'+name))
     border-danger
    @endif
@@ -11,6 +11,6 @@
   @endif
 
   />
-
-  @!error({name})
 </div>
+@!error({name})
+

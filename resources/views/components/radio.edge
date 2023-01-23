@@ -1,0 +1,11 @@
+<p>{{label}}</p>
+@each((opt, index) in options)
+<label for="radio{{name+labels[index]}}"> {{labels[index]}}
+<input name={{name}} id="radio{{name+labels[index]}}" type="radio"
+  @if(checked == opt)
+    checked
+  @endif
+ value={{opt}} >
+</label>
+@end
+@!error({name})

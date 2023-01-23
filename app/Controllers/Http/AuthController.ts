@@ -1,6 +1,8 @@
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import ExceptionHandler from 'App/Exceptions/Handler'
 import Usuario from '../../Models/Usuario'
 import LoginValidator from '../../Validators/LoginValidator'
+import { Exception } from '@adonisjs/core/build/standalone'
 export default class AuthController {
 
   public async create({view}) {
@@ -14,7 +16,6 @@ export default class AuthController {
       console.log(loginPayload)
       await auth.use('web').attempt(loginPayload.email, loginPayload.password)
     }catch (e) {
-      console.log(e)
       return response.redirect().toRoute('auth.create')
     }
 

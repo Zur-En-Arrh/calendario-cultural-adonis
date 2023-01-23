@@ -25,6 +25,7 @@ body {
 .post-slide .post-img img {
     width: 100%;
     height: auto;
+    max-height: 125px;
     transform: scale(1, 1);
     transition: transform 0.2s linear;
 }
@@ -104,6 +105,15 @@ body {
     box-shadow: 0px 10px 20px -10px #1376c5;
     border-radius: 25px;
     text-transform: uppercase;
+}
+
+.post-slide .read-more.danger {
+  background: #aa0000;
+}
+
+
+.post-slide .read-more.danger:hover {
+  background: #ff0000;
 }
 
 .post-slide .read-more:hover {

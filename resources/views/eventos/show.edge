@@ -1,0 +1,16 @@
+@layout('layout')
+@section('conteudo')
+  <p>{{evento.nome}}</p>
+  <p>{{evento.frequencia}}</p>
+  <p>{{evento.tipo.nome}}</p>
+  <p>{{evento.cidade}}</p>
+
+  <p>Estacionamento? {{evento.estacionamento?'Sim':'Não'}}</p>
+  <p>Equipe Médica? {{evento.medica?'Sim':'Não'}}</p>
+  <p>Segurança no local? {{evento.seguranca?'Sim':'Não'}}</p>
+  <p>Acessibilidade para deficientes? {{evento.deficiencia?'Sim':'Não'}}</p>
+  <p>Banheiros públicos? {{evento.banheiro?'Sim':'Não'}}</p>
+  <p>Caixa 24h? {{evento.caixa?'Sim':'Não'}}</p>
+  <img src="{{route('eventos.foto', {path: 'public', name: evento.foto})}}"/>
+
+@endsection

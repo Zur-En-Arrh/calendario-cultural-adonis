@@ -30,6 +30,12 @@ export default class EventoValidator {
     cidade: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
     frequencia: schema.enum(['quinzenal', 'mensal', 'anual']),
     tipoId: schema.number(),
+    medica: schema.boolean(),
+    estacionamento:schema.boolean(),
+    seguranca:schema.boolean(),
+    banheiro:schema.boolean(),
+    deficiencia:schema.boolean(),
+    caixa:schema.boolean(),
     foto: schema.file.optional({
       size: '5mb',
       extnames: ['png', 'jpg']
@@ -53,6 +59,5 @@ export default class EventoValidator {
     'minLength': 'Nome precisa ter no mínimo 5 caracteres',
     'enum': 'Valor fora do padrão esperado',
     'maxLength': 'Tamanho máximo excedido do campo'
-
   }
 }

@@ -1,32 +1,37 @@
-@layout('layouts/index')
-@section('conteudo')
+<div class="modal fade" id="modalEvento" tabindex="-1" aria-labelledby="modalEventoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEventoLabel">Cadastrar Evento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
 
-  <form action="
-      @if(evento)
-        {{route('eventos.update', {id:evento.id} )}}
-      @else
-        {{route('eventos.store')}}
-      @endif
-    " enctype="multipart/form-data" method="post">
-
-    @if(evento)
-      @!input({label: 'Nome', name: 'nome', value: evento})
-      @!input({label: 'Cidade', name: 'cidade', value: evento})
-      @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], selected:evento.frequencia})
-      @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes, selected: evento.tipoId})
-
-      @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
-      <small>Foto atual:</small> <br/>
-      <img src="{{route('eventos.foto', {name:evento.foto})}}" width="300px" height="250px" alt="Imagem"/> <br/>
-    @else
-      @!input({label: 'Nome', name: 'nome' })
-      @!input({label: 'Cidade', name: 'cidade' })
-      @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
-      @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes})
-      @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
-    @endif
+            <form action="{{route('eventos.store')}}" enctype="multipart/form-data" method="post">
 
 
-    <button class="btn btn-success" type="submit">Salvar</button>
-  </form>
-@endsection
+                @!input({label: 'Nome', name: 'nome' })
+                @!input({label: 'Cidade', name: 'cidade' })
+                @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
+                @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes})
+                @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
+
+                @!radio({checked: false, label: 'Estacionamento', name: 'estacionamento', options: [true,false], labels: ['Sim', 'Não']})
+                @!radio({checked: false, label: 'Acessibilidade para portadores de deficiência física', name: 'deficiencia', options: [true,false], labels: ['Sim', 'Não']})
+                @!radio({checked: false, label: 'Equipe Médica no local', name: 'medica', options: [true,false], labels: ['Sim', 'Não']})
+                @!radio({checked: false, label: 'Banheiro Público', name: 'banheiro', options: [true,false], labels: ['Sim', 'Não']})
+                @!radio({checked: false, label: 'Caixa 24h', name: 'caixa', options: [true,false], labels: ['Sim', 'Não']})
+                @!radio({checked: false, label: 'Segurança no local', name: 'seguranca', options: [true,false], labels: ['Sim', 'Não']})
+
+                <button type="submit" class="btn btn-save bg-calendario w-100 my-4 mb-2">Salvar</button>
+            </form>
+          </div>
+          <div class="modal-footer justify-content-between">
+
+            <button type="button" class="btn bg-gradient-dark mb-0" data-bs-dismiss="modal">Fechar</button>
+          <!--  <button type="button" class="btn bg-gradient-primary mb-0">Save changes</button>
+          -->
+          </div>
+        </div>
+      </div>
+    </div>

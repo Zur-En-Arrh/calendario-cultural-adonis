@@ -20,8 +20,8 @@
       <div class="container mt-6">
         <!-- Button trigger modal -->
 
-        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Criar novo evento
+        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
+          <i class="fa fa-plus"></i> Criar novo evento
         </button>
 
         @each((eventos, nome) in tipos)
@@ -35,20 +35,7 @@
                     <div id="" class="owl-carousel news-slider">
 
                     @each(evento in eventos)
-                        <div class="post-slide">
-                            <div class="post-img">
-                                <img src="{{route('eventos.foto', {name:evento.foto})}}" alt="">
-                                <a href="#" class="over-layer"><i class="fa fa-link"></i></a>
-                            </div>
-                            <div class="post-content">
-                                <h3 class="post-title">
-                                    <a href="#">{{evento.nome}}</a>
-                                </h3>
-                                <p class="post-description"></p>
-                                <span class="post-date"><i class="fa fa-clock-o"></i>{{evento.frequencia}}</span>
-                                <a href="#" class="read-more">read more</a>
-                            </div>
-                        </div>
+                      @include('components/evento_card.edge')
                     @end
 
                     </div>
@@ -58,39 +45,7 @@
 
       </div>
 
-    <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Your modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-              <form role="form" method="post" action="{{route('eventos.store')}}" class="text-start" enctype="multipart/form-data">
-
-                @!input({label: 'Nome', name: 'nome' })
-                @!input({label: 'Cidade', name: 'cidade' })
-                @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
-                @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes})
-                @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
-
-                <div class="text-center">
-                  <button type="submit" class="btn bg-calendario w-100 my-4 mb-2 text-white">Cadastrar</button>
-                </div>
-
-              </form>
-
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn bg-gradient-dark mb-0" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn bg-gradient-primary mb-0">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    @include('eventos/create')
 
      <!-- Button -->
     <div class="container mb-5 mt-6">

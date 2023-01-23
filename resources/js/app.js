@@ -9,6 +9,6 @@ import './plugins/countup.min.js'
 import './plugins/flatpickr.min.js'
 import './plugins/rellax.min.js'
 import './plugins/parallax.min.js'
-import './material-kit.js'
-import './carousel.js'
+//import './material-kit.js'
+//import './carousel.js'
 

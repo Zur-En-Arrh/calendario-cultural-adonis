@@ -3,7 +3,7 @@
 @section('conteudo')
 
   <!-- Page -->
-  <div class="page-header align-items-start min-vh-100" style="background-image: url('../img/rio-de-janeiro-theme_2.jpg');" loading="lazy">
+  <div class="page-header align-items-start min-vh-100" style="background-image: url({{route('eventos.foto', {path: 'resources', name: 'rio-de-janeiro-theme_2.jpg'})}});" loading="lazy">
     <span class="mask bg-calendario opacity-3"></span>
     <div class="container my-auto">
       <div class="row">
@@ -19,7 +19,6 @@
                  @!input({name: 'email', label: 'E-mail', type: 'email'})
 
                   @!input({name: 'password', label: 'Senha', type: 'password'})
-
 
                 <div class="form-check form-switch d-flex align-items-center mb-3">
                   <input class="form-check-input" type="checkbox" id="rememberMe" checked>
