@@ -19,7 +19,7 @@ export default class AuthController {
       return response.redirect().toRoute('auth.create')
     }
 
-    return response.redirect().toRoute('usuario.edit')
+    return response.redirect().toRoute('usuario.perfil')
   }
 
   public async logout({auth, response}) {
