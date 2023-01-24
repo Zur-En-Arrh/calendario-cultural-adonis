@@ -1,16 +1,64 @@
-@layout('layout')
-@section('conteudo')
-  <p>{{evento.nome}}</p>
-  <p>{{evento.frequencia}}</p>
-  <p>{{evento.tipo.nome}}</p>
-  <p>{{evento.cidade}}</p>
+@layout('../layout')
 
-  <p>Estacionamento? {{evento.estacionamento?'Sim':'Não'}}</p>
-  <p>Equipe Médica? {{evento.medica?'Sim':'Não'}}</p>
-  <p>Segurança no local? {{evento.seguranca?'Sim':'Não'}}</p>
-  <p>Acessibilidade para deficientes? {{evento.deficiencia?'Sim':'Não'}}</p>
-  <p>Banheiros públicos? {{evento.banheiro?'Sim':'Não'}}</p>
-  <p>Caixa 24h? {{evento.caixa?'Sim':'Não'}}</p>
-  <img src="{{route('eventos.foto', {path: 'public', name: evento.foto})}}"/>
+@section('conteudo')
+
+  <!-- Page -->
+  <!-- -------- START HEADER 4 w/ search book a ticket form ------- -->
+  <header>
+    <div class="page-header min-height-400" style="background-image: url({{route('eventos.foto', {path: 'public', name: evento.foto})}});" loading="lazy">
+      <span class="mask bg-gradient-dark opacity-6"></span>
+    </div>
+  </header>
+  <!-- -------- END HEADER 4 w/ search book a ticket form ------- -->
+  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+    <!-- START Blogs w/ 4 cards w/ image & text & link -->
+    <section class="py-sm-4 py-4 position-relative"></section>
+      <div class="container mb-5">
+        <div class="row">
+
+          <div class="col-lg-6">
+            <a href="javascript:history.back()"> Voltar </a>
+            <h1 class="mb-4">{{evento.nome}} </h1>
+            <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum 
+            tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollis cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus 
+            sapien ipsum semper rutrum orci nec lobortis gravida. </p>
+
+            <div class="row mb-6 mt-4">
+              <div class="col-sm-4">
+                <h6 class="text-capitalize mb-2"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp; {{evento.frequencia}} </h6>
+                <h6 class="text-capitalize mb-2"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp; {{evento.tipo.nome}} </h6>
+                <h6 class="text-capitalize mb-2"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; {{evento.cidade}} </h6>
+              </div>
+              <div class="col-sm-6 ">
+                <h6 class="mb-2"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; Estacionamento: {{evento.estacionamento?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-medkit" aria-hidden="true"></i>&nbsp; Equipe Médica: {{evento.medica?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-shield" aria-hidden="true"></i>&nbsp; Segurança no local: {{evento.seguranca?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-wheelchair" aria-hidden="true"></i>&nbsp; Acessibilidade para deficientes: {{evento.deficiencia?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-bath" aria-hidden="true"></i>&nbsp; Banheiros públicos: {{evento.banheiro?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; Caixa 24h: {{evento.caixa?'Sim':'Não'}}</h6>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+            <div class="mapouter mt-2"><div class="gmap_canvas">
+            <iframe width="100%" height="400px" id="gmap_canvas" 
+            src="https://maps.google.com/maps?q={{evento.cidade}}&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+            frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <style>.mapouter{position:relative;text-align:right;height:NaNpx;width:NaNpx;}</style><a href="https://www.embedgooglemap.net"></a>
+            <style>.gmap_canvas {overflow:hidden;background:none!important;height:NaNpx;width:NaNpx;}</style></div></div>
+          </div>
+
+        </div>
+      
+
+      </div>
+      </section>
+    <!-- END Blogs w/ 4 cards w/ image & text & link -->
+  </div>
+
+  <!-- End Page -->
 
 @endsection
+

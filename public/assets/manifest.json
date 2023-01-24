@@ -1,9 +1,9 @@
 {
-  "assets/app.css": "http://localhost:62016/assets/app.css",
-  "assets/app.js": "http://localhost:62016/assets/app.js",
-  "assets/images/nucleo-icons.svg": "http://localhost:62016/assets/images/nucleo-icons.01ebecaf.svg",
-  "assets/fonts/nucleo-icons.eot": "http://localhost:62016/assets/fonts/nucleo-icons.19abb540.eot",
-  "assets/fonts/nucleo-icons.ttf": "http://localhost:62016/assets/fonts/nucleo-icons.d6a66724.ttf",
-  "assets/fonts/nucleo-icons.woff": "http://localhost:62016/assets/fonts/nucleo-icons.c82c9b7c.woff",
-  "assets/fonts/nucleo-icons.woff2": "http://localhost:62016/assets/fonts/nucleo-icons.cba26748.woff2"
+  "assets/app.css": "http://localhost:8080/assets/app.css",
+  "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/images/nucleo-icons.svg": "http://localhost:8080/assets/images/nucleo-icons.95fa360c.svg",
+  "assets/fonts/nucleo-icons.eot": "http://localhost:8080/assets/fonts/nucleo-icons.19abb540.eot",
+  "assets/fonts/nucleo-icons.ttf": "http://localhost:8080/assets/fonts/nucleo-icons.d6a66724.ttf",
+  "assets/fonts/nucleo-icons.woff": "http://localhost:8080/assets/fonts/nucleo-icons.c82c9b7c.woff",
+  "assets/fonts/nucleo-icons.woff2": "http://localhost:8080/assets/fonts/nucleo-icons.cba26748.woff2"
 }
