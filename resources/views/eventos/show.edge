@@ -7,6 +7,16 @@
   <header>
     <div class="page-header min-height-400" style="background-image: url({{route('eventos.foto', {path: 'public', name: evento.foto})}});" loading="lazy">
       <span class="mask bg-gradient-dark opacity-6"></span>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <div class="text-center">
+              <h1 class="text-white">{{evento.nome}}</h1>
+              <h3 class="text-white">{{evento.cidade}} </h3>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
   <!-- -------- END HEADER 4 w/ search book a ticket form ------- -->
@@ -20,14 +30,14 @@
             <a href="javascript:history.back()"> Voltar </a>
             <h1 class="mb-4">{{evento.nome}} </h1>
             <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum 
-            tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollis cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus 
+            tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollisgit  cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus 
             sapien ipsum semper rutrum orci nec lobortis gravida. </p>
 
             <div class="row mb-6 mt-4">
               <div class="col-sm-4">
-                <h6 class="text-capitalize mb-2"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp; {{evento.frequencia}} </h6>
-                <h6 class="text-capitalize mb-2"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp; {{evento.tipo.nome}} </h6>
-                <h6 class="text-capitalize mb-2"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; {{evento.cidade}} </h6>
+                <h6 class="text-capitalize mb-2"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp; Frequencia: {{evento.frequencia}} </h6>
+                <h6 class="text-capitalize mb-2"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp; Tipo: {{evento.tipo.nome}} </h6>
+                <h6 class="text-capitalize mb-2"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Cidade: {{evento.cidade}} </h6>
               </div>
               <div class="col-sm-6 ">
                 <h6 class="mb-2"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; Estacionamento: {{evento.estacionamento?'Sim':'Não'}}</h6>
