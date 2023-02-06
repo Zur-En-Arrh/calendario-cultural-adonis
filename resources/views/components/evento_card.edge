@@ -1,17 +1,22 @@
 <div class="post-slide">
     <div class="post-img">
         <img src="{{route('eventos.foto', {name:evento.foto, path: 'public'})}}" height="50px" alt="">
-        <a href="{{route('eventos.edit', {id: evento.id})}}" class="over-layer"><i class="fa fa-pen"></i></a>
+        {{--  <a href="{{route('eventos.edit', {id: evento.id})}}" class="over-layer"><i class="fa fa-pen"></i></a>  --}}
     </div>
     <div class="post-content">
+
         <h3 class="post-title">
-            <a href="#">{{evento.nome}}</a>
+            <a href="{{route('eventos.show', {id: evento.id})}}">{{evento.nome}}</a>
         </h3>
-<!--        <p class="post-description"></p> -->
-        <span class="post-date"><i class="fa fa-clock-o"></i>{{evento.frequencia}}</span> <br>
-        <div class="d-flex justify-content-between mt-3">
-        <a href="{{route('eventos.show', {id: evento.id})}}" class="read-more"><i class="fa fa-eye"></i> Saber mais</a>
-        <a href="{{route('eventos.delete',{id:evento.id})}}"  class="read-more danger"> <i class="fas fa-trash"></i>&nbsp; Excluir </a></p>
+
+        <span class="post-date text-capitalize"><i class="fas fa-building"></i>{{evento.cidade}}</span>&nbsp;&nbsp;
+        <span class="post-date text-capitalize"><i class="fa fa-clock-o"></i>{{evento.frequencia}}</span>
+    
+
+        <div class="d-flex justify-content-between mt-2">
+        <a href="{{route('eventos.show', {id: evento.id})}}"> Ver Mais</a>
+        {{--  <a href="{{route('eventos.show', {id: evento.id})}}" class="read-more"><i class="fa fa-eye"></i> Saber mais</a>
+        <a href="{{route('eventos.delete',{id:evento.id})}}"  class="read-more danger"> <i class="fas fa-trash"></i>&nbsp; Excluir </a></p>  --}}
         </div>
     </div>
 </div>
