@@ -11,9 +11,9 @@
 
 
                 @!input({label: 'Nome', name: 'nome' })
-                @!input({label: 'Cidade', name: 'cidade' })
-                @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal']})
-                @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes})
+                @!select({label: 'Cidade', name: 'cidadeId', texts: cidadesNomes, options: cidadesIds, classes: 'input-group input-group-outline my-3'})
+                @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], classes: 'input-group input-group-outline my-3'})
+                @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes, classes: 'input-group input-group-outline my-3'})
                 @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
 
                 @!radio({checked: false, label: 'Estacionamento', name: 'estacionamento', options: [true,false], labels: ['Sim', 'Não']})

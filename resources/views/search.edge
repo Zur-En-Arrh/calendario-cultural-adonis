@@ -10,10 +10,6 @@
             <div class="text-center">
               <h1 class="text-white d-lg-none" style="font-size: 34px !important;"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Todos os Eventos</h1>
               <h1 class="text-white d-none d-md-block" style="font-size: 82px !important;"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Todos os Eventos</h1>
-            
-            <button type="button" class="btn bg-light mt-2 text-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
-              <i class="fa fa-plus"></i> &nbsp;Criar novo evento
-            </button>
             </div>
           </div>
         </div>
@@ -58,11 +54,9 @@
           </div>
         </section>
 
-        @each((eventos, nome) in tipos)
-
             <div class="row">
                 <div class="col-md-12">
-                  <h3 class="mb-2 text-capitalize">{{nome}}</h3>
+                  <h3 class="mb-2 text-capitalize"> Resultado da Busca: </h3>
 
                 </div>
                 <div class="col-md-12">
@@ -75,8 +69,7 @@
                     </div>
                 </div>
             </div>
-        @end
-
+   
       </div>
 
     @include('eventos/create')

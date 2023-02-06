@@ -27,7 +27,8 @@ export default class EventoValidator {
    */
   public schema = schema.create({
     nome: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
-    cidade: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
+    //cidade: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
+    cidadeId: schema.number(),
     frequencia: schema.enum(['quinzenal', 'mensal', 'anual']),
     tipoId: schema.number(),
     medica: schema.boolean(),

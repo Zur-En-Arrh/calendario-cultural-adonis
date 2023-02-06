@@ -6,12 +6,16 @@ import Application from '@ioc:Adonis/Core/Application';
 import Evento from '../../Models/Evento'
 import EventoValidator from "App/Validators/EventoValidator";
 import Tipo from "App/Models/Tipo";
+import Cidade from "App/Models/Cidade";
+import Regiao from "Database/seeders/Regiao";
+import Regioe from "App/Models/Regiao";
+import Database from "@ioc:Adonis/Lucid/Database";
 import Comentario from "App/Models/Comentario"
 
 export default class EventosController {
 
   public async index({view}) : HttpContextContract {
-    const eventos = await Evento.query().preload('tipo')
+    const eventos = await Evento.query().preload('tipo').preload('cidade')
     const tipos = {}
     eventos.map(e => {
       if(e.tipo.nome in tipos) {
@@ -22,11 +26,114 @@ export default class EventosController {
     })
 
     const categorias = await Tipo.all()
+    const cidades = await Cidade.all()
+    const regioes = await Regioe.all()
     const tiposIds = categorias.map(tipo => tipo.id)
     const tiposNomes = categorias.map(tipo => tipo.nome)
+    const regioesIds = regioes.map(regioes => regioes.id)
+    const regioesNomes = regioes.map(regioes => regioes.nome)
+    const cidadesIds = cidades.map((cidade)=>cidade.id)
+    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
     const path = Application.tmpPath('/uploads')
     //return view.render('eventos/index', {eventos, path})
-    return view.render('eventos', {path, tipos, tiposIds, tiposNomes})
+    return view.render('eventos', {path, tipos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
+  }
+
+  public async foto({view, response, params}) : HttpContextContract {
+    response.header('Content-Type', 'image/gif');
+    let file
+    if(params.path == 'public')
+      file = Application.publicPath(`images/${params.name}`)
+    else
+      file = Application.resourcesPath(`img/${params.name}`)
+
+    return response.download(file)
+  }
+
+  public async search({view, params, request}) : HttpContextContract {
+    console.log(params,request.all())
+    let eventos = 'SELECT * FROM eventos'
+    let where = false
+
+    if(request.input('busca')){
+      eventos += ' WHERE nome LIKE "%'+ request.input('busca') +'%"'
+      where = true
+    }
+    if(request.input('tipo')){
+      eventos += where ? ' AND tipo_id = ' + request.input('tipo') : ' WHERE tipo_id = ' + request.input('tipo')
+      where = true
+    }
+    if(request.input('regiao')){
+      eventos += where ? ' AND cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')' : ' WHERE cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')'
+      where = true
+    }
+    if(request.input('cidade')){
+      eventos += where ? ' AND cidade_id = ' + request.input('cidade') : ' WHERE cidade_id = ' + request.input('cidade')
+    }
+
+    eventos = await Database.rawQuery(eventos)
+
+    const categorias = await Tipo.all()
+    const cidades = await Cidade.all()
+    const regioes = await Regioe.all()
+    const tiposIds = categorias.map(tipo => tipo.id)
+    const tiposNomes = categorias.map(tipo => tipo.nome)
+    const regioesIds = regioes.map(regioes => regioes.id)
+    const regioesNomes = regioes.map(regioes => regioes.nome)
+    const cidadesIds = cidades.map((cidade)=>cidade.id)
+    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
+    const path = Application.tmpPath('/uploads')
+    //return view.render('eventos/index', {eventos, path})
+    return view.render('eventos', {path, tipos, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
+  }
+
+  public async foto({view, response, params}) : HttpContextContract {
+    response.header('Content-Type', 'image/gif');
+    let file
+    if(params.path == 'public')
+      file = Application.publicPath(`images/${params.name}`)
+    else
+      file = Application.resourcesPath(`img/${params.name}`)
+
+    return response.download(file)
+  }
+
+  public async search({view, params, request}) : HttpContextContract {
+    console.log(params,request.all())
+    let eventos = 'SELECT * FROM eventos'
+    let where = false
+
+    if(request.input('busca')){
+      eventos += ' WHERE nome LIKE "%'+ request.input('busca') +'%"'
+      where = true
+    }
+    if(request.input('tipo')){
+      eventos += where ? ' AND tipo_id = ' + request.input('tipo') : ' WHERE tipo_id = ' + request.input('tipo')
+      where = true
+    }
+    if(request.input('regiao')){
+      eventos += where ? ' AND cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')' : ' WHERE cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')'
+      where = true
+    }
+    if(request.input('cidade')){
+      eventos += where ? ' AND cidade_id = ' + request.input('cidade') : ' WHERE cidade_id = ' + request.input('cidade')
+    }
+
+    eventos = await Database.rawQuery(eventos)
+
+    const categorias = await Tipo.all()
+    const cidades = await Cidade.all()
+    const regioes = await Regioe.all()
+    const tiposIds = categorias.map(tipo => tipo.id)
+    const tiposNomes = categorias.map(tipo => tipo.nome)
+    const regioesIds = regioes.map(regioes => regioes.id)
+    const regioesNomes = regioes.map(regioes => regioes.nome)
+    const cidadesIds = cidades.map((cidade)=>cidade.id)
+    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
+    const path = Application.tmpPath('/uploads')
+    //return view.render('eventos/index', {eventos, path})
+
+    return view.render('search', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
   }
 
   public async foto({view, response, params}) : HttpContextContract {
@@ -61,7 +168,7 @@ export default class EventosController {
       }
 
       evento.nome = eventoPayload.nome
-      evento.cidade = eventoPayload.cidade
+      evento.cidadeId = eventoPayload.cidadeId
       evento.frequencia = eventoPayload.frequencia
       evento.tipoId = eventoPayload.tipoId
       evento.estacionamento = eventoPayload.estacionamento,
@@ -77,7 +184,7 @@ export default class EventosController {
       await Evento.create({
         nome: eventoPayload.nome,
         frequencia: eventoPayload.frequencia,
-        cidade: eventoPayload.cidade,
+        cidadeId: eventoPayload.cidadeId,
         foto: eventoPayload.foto.clientName,
         tipoId: eventoPayload.tipoId,
         estacionamento: eventoPayload.estacionamento,
@@ -94,11 +201,14 @@ export default class EventosController {
   }
 
   public async edit({view, params}) : HttpContextContract {
+    const cidades = await Cidade.all()
+    const cidadesIds = cidades.map((cidade)=>cidade.id)
+    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
     const evento = await Evento.find(params.id)
     const tipos = await Tipo.all()
     const tiposIds = tipos.map(tipo => tipo.id)
     const tiposNomes = tipos.map(tipo => tipo.nome)
-    return view.render('eventos/edit', {evento, tiposIds, tiposNomes})
+    return view.render('eventos/edit', {evento, tiposIds, tiposNomes, cidadesIds, cidadesNomes})
 
   }
 
@@ -109,7 +219,8 @@ export default class EventosController {
   }
 
   public async show({view, params}) : HttpContextContract {
-    const evento = await Evento.find(params.id)
+    const evento = await Evento.query().where('id', params.id).preload('cidade').first()
+    console.log(evento)
     evento.tipo = await Tipo.find(evento.tipoId)
     const comentarios = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
     return view.render('eventos/show', {evento, comentarios})
