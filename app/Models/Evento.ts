@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import Tipo from './Tipo'
+import Cidade from './Cidade'
 
 export default class Evento extends BaseModel {
   @column({ isPrimary: true })
@@ -8,9 +9,6 @@ export default class Evento extends BaseModel {
 
   @column()
   public nome: string
-
-  @column()
-  public cidade: string
 
   @column()
   public tipoId: number
@@ -24,7 +22,6 @@ export default class Evento extends BaseModel {
 
   @column()
   public foto: string
-
 
   @column()
   public frequencia: string
@@ -46,6 +43,16 @@ export default class Evento extends BaseModel {
 
   @column()
   public seguranca : boolean
+
+  @column()
+  public cidadeId: number
+
+  @hasOne(() => Cidade, {
+    foreignKey: 'id',
+    localKey: 'cidadeId',
+    serializeAs: 'cidade'
+  })
+  public cidade: HasOne<typeof Cidade>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

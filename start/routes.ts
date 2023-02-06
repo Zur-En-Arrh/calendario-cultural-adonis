@@ -35,6 +35,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/create', 'EventosController.create').as('eventos.create')
+  Route.get('/search', 'EventosController.search').as('eventos.search')
   Route.post('/store', 'EventosController.store').as('eventos.store')
   Route.get('/edit/:id', 'EventosController.edit').as('eventos.edit')
   Route.get('/show/:id', 'EventosController.show').as('eventos.show')

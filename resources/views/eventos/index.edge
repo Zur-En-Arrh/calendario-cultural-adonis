@@ -3,7 +3,7 @@
   @each(evento in eventos)
     <h1>{{evento.nome}} | {{evento.tipo.nome}}</h1>
     <p>{{evento.frequencia}}</p>
-    <p>{{evento.cidade}}</p>
+    <p>{{evento.cidade.nome}}</p>
     <p><a href="{{route('eventos.edit',{id:evento.id})}}"  class="btn btn-primary"> <i class="fas fa-pen"></i>&nbsp; Editar </a>
     <a href="{{route('eventos.delete',{id:evento.id})}}"  class="btn btn-danger"> <i class="fas fa-trash"></i>&nbsp; Excluir </a></p>
     <img src="{{route('eventos.foto', {name:evento.foto})}}" width="300px" height="250px" alt="Imagem"/>
