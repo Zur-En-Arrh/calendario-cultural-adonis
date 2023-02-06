@@ -10,7 +10,8 @@ import Cidade from "App/Models/Cidade";
 import Regiao from "Database/seeders/Regiao";
 import Regioe from "App/Models/Regiao";
 import Database from "@ioc:Adonis/Lucid/Database";
-import Comentario from "App/Models/Comentario"
+import Comentario from "App/Models/Comentario";
+import I18n from '@ioc:Adonis/Addons/I18n';
 
 export default class EventosController {
 
@@ -220,9 +221,12 @@ export default class EventosController {
 
   public async show({view, params}) : HttpContextContract {
     const evento = await Evento.query().where('id', params.id).preload('cidade').first()
-    console.log(evento)
     evento.tipo = await Tipo.find(evento.tipoId)
-    const comentarios = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
+    const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
+    const comentarios = query.map(com => {
+      let format = com.createdAt.day+'/'+com.createdAt.month+'/'+com.createdAt.year
+      return {id: com.id, dataFormatada: format, comentario: com.comentario, userId: com.userId, eventoId: com.eventoId, usuario: com.usuario}
+    })
     return view.render('eventos/show', {evento, comentarios})
   }
 

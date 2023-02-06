@@ -27,7 +27,7 @@
         <div class="row">
 
           <div class="col-lg-6">
-            <a href="javascript:history.back()"> <i class="fas fa-arrow-left"></i></i>&nbsp;&nbsp;Voltar </a>
+            <a href="{{route('eventos.index')}}"> <i class="fas fa-arrow-left"></i></i>&nbsp;&nbsp;Voltar </a>
             <h1 class="mb-4">{{evento.nome}} </h1>
             <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum
             tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollisgit  cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus
@@ -69,9 +69,16 @@
       </section>
     <!-- END Blogs w/ 4 cards w/ image & text & link -->
     <div x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
-      <textarea x-model="current.comentario"> </textarea>
-      <button @click="current.id = await save(current); comentarios.push({...current}); current.comentario = ''">save</button>
-      <ul>
+      <h2>Comentários</h2>
+      <div class="form-floating">
+
+      <textarea class="form-control border border-dark" id="comentario" x-model="current.comentario" placeholder="Deixe um comentário..."> </textarea>
+      <label for="comentario">Deixe um comentário...</label>
+
+      <button class="btn btn-success my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
+
+      </div>
+
         <template x-for="c in comentarios">
           @include('components/comentario')
         </template>
@@ -79,7 +86,6 @@
           @include('components/comentario')
         @end --}}
 
-      </ul>
 
     </div>
 
@@ -106,13 +112,14 @@
     }
 
     async function atualizar(obj, url) {
-      console.log(obj)
 
 
       axios.post('http://localhost:3333'+url, obj)
         .then(res => {
           console.log(res)
-
+          if(res.status == '200') {
+            alert('Atualizado com sucesso')
+          }
         })
 
     }
