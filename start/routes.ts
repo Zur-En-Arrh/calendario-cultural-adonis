@@ -40,8 +40,15 @@ Route.group(() => {
   Route.get('/show/:id', 'EventosController.show').as('eventos.show')
   Route.get('/delete/:id', 'EventosController.destroy').as('eventos.delete')
   Route.post('/update/:id', 'EventosController.store').as('eventos.update')
+
   Route.get('/', 'EventosController.index').as('eventos.index')
 }).prefix('eventos')
+
+Route.group(() => {
+  Route.post('/store', 'ComentariosController.store').as('comentario.store')
+  Route.get('/delete/:id', 'ComentariosController.destroy').as('comentario.delete')
+  Route.post('/edit/:id', 'ComentariosController.update').as('comentario.update')
+}).prefix('comentario')
 
   //.middleware('auth:web')
 

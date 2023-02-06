@@ -29,8 +29,8 @@
           <div class="col-lg-6">
             <a href="javascript:history.back()"> Voltar </a>
             <h1 class="mb-4">{{evento.nome}} </h1>
-            <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum 
-            tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollisgit  cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus 
+            <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum
+            tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollisgit  cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus
             sapien ipsum semper rutrum orci nec lobortis gravida. </p>
 
             <div class="row mb-6 mt-4">
@@ -53,20 +53,66 @@
 
           <div class="col-lg-6">
             <div class="mapouter mt-2"><div class="gmap_canvas">
-            <iframe width="100%" height="400px" id="gmap_canvas" 
-            src="https://maps.google.com/maps?q={{evento.cidade}}&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+            <iframe width="100%" height="400px" id="gmap_canvas"
+            src="https://maps.google.com/maps?q={{evento.cidade}}&t=&z=13&ie=UTF8&iwloc=&output=embed"
             frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
             <style>.mapouter{position:relative;text-align:right;height:NaNpx;width:NaNpx;}</style><a href="https://www.embedgooglemap.net"></a>
             <style>.gmap_canvas {overflow:hidden;background:none!important;height:NaNpx;width:NaNpx;}</style></div></div>
           </div>
 
         </div>
-      
-
       </div>
       </section>
     <!-- END Blogs w/ 4 cards w/ image & text & link -->
+    <div x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
+      <textarea x-model="current.comentario"> </textarea>
+      <button @click="current.id = await save(current); comentarios.push({...current}); current.comentario = ''">save</button>
+      <ul>
+        <template x-for="c in comentarios">
+          @include('components/comentario')
+        </template>
+        {{-- @each(comentario in comentarios)
+          @include('components/comentario')
+        @end --}}
+
+      </ul>
+
+    </div>
+
   </div>
+
+  <script>
+    async function save(com) {
+      console.log("salvando...", com)
+      const res = await axios.post('http://localhost:3333{{route('comentario.store')}}', com)
+      console.log(res.data)
+      return res.data.$original.id
+    }
+
+    async function apagar(url, id) {
+      console.log('http://localhost:3333'+url, id)
+      axios('http://localhost:3333'+url)
+        .then(res => {
+          console.log(res)
+          if(res.status == '200') {
+            alert('Apagado com sucesso')
+          }
+      })
+
+    }
+
+    async function atualizar(obj, url) {
+      console.log(obj)
+
+
+      axios.post('http://localhost:3333'+url, obj)
+        .then(res => {
+          console.log(res)
+
+        })
+
+    }
+  </script>
 
   <!-- End Page -->
 

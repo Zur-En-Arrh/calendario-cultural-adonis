@@ -1,0 +1,44 @@
+    <div x-ref="comentario" x-data="{open: false, urlApagar: '{{route('comentario.delete', {id: 'id'})}}', atual: {userId: c.user_id, eventoId: c.evento_id, ...c}}">
+      <h4 x-text="c.usuario.nome+'-'+c.created_at"></h4>
+
+      <template x-if="!open">
+        <div>
+        <p x-text="atual.comentario"></p>
+
+        <template x-if="{{auth.user.id}} == c.user_id || {{auth.user.id}} == c.userId">
+          <div>
+          <button type="button" @click="open = !open">Editar</button>
+          <button type="button" @click="$refs.comentario.remove();apagar('{{route('comentario.delete', {id: 'id'})}}'.replace('id', c.id), 'div'+$id(c.id));">Apagar</button>
+          </div>
+        </template>
+        </div>
+      </template>
+
+      <template x-if="open">
+        <div>
+          <textarea x-model="atual.comentario"></textarea>
+          <button @click="atualizar(atual, '{{route('comentario.update', {id: 'id'})}}'.replace('id', c.id)); open = !open">Salvar</button>
+        </div>
+      </template>
+    </div>
+
+    {{--<h4>{{comentario.usuario.nome}} - {{comentario.createdAt}}</h4>
+
+    @if(auth.user.id == comentario.userId)
+      <button type="button" @click="apagar('{{route('comentario.delete', {id: comentario.id})}}'); comentarios = []">Apagar</button>
+      <div x-data="{open: false, atual: {comentario: '{{comentario.comentario}}', userId: {{auth.user.id}}, eventoId: {{evento.id}}} }">
+        <button type="button" @click="open = !open">Editar</button>
+
+            <template x-if="open">
+              <div>
+                <textarea x-model="atual.comentario">{{comentario.comentario}}</textarea>
+                <button @click="atualizar({id: {{comentario.id}},...atual}, '{{route('comentario.update', {id: comentario.id})}}'); open = !open">Salvar</button>
+              </div>
+            </template>
+
+            <template x-if="!open">
+              <p x-text="atual.comentario">
+              </p>
+            </template>
+      </div>
+    @endif--}}

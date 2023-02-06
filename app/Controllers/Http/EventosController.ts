@@ -1,3 +1,4 @@
+import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import { HttpContext } from "@adonisjs/core/build/standalone";
@@ -5,6 +6,7 @@ import Application from '@ioc:Adonis/Core/Application';
 import Evento from '../../Models/Evento'
 import EventoValidator from "App/Validators/EventoValidator";
 import Tipo from "App/Models/Tipo";
+import Comentario from "App/Models/Comentario"
 
 export default class EventosController {
 
@@ -109,7 +111,8 @@ export default class EventosController {
   public async show({view, params}) : HttpContextContract {
     const evento = await Evento.find(params.id)
     evento.tipo = await Tipo.find(evento.tipoId)
-    return view.render('eventos/show', {evento})
+    const comentarios = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
+    return view.render('eventos/show', {evento, comentarios})
   }
 
 }
