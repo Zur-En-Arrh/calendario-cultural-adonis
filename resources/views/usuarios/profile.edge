@@ -37,6 +37,40 @@
       </div>
     </section>
     <!-- END Testimonials w/ user image & text & info -->
+
+    <!-- START Blogs w/ 4 cards w/ image & text & link -->
+      <div class="container mt-n4 mb-4">
+        <div class="row">
+          <div class="col-lg-6">
+            <h3 class="mb-5"><i class="far fa-heart" aria-hidden="true"></i>&nbsp; Eventos Favoritos</h3>
+          </div>
+        </div>
+        <div class="row">
+        @each(evento in eventos)
+            <div class="col-lg-3 col-sm-6">
+              <div class="card card-plain">
+                <div class="card-header p-0 position-relative">
+                  <a class="d-block blur-shadow-image">
+                    <img src={{route('eventos.foto', {path: 'public',name:evento.foto})}} alt="img-blur-shadow" class="fixed-img-size-card img-fluid shadow border-radius-lg" loading="lazy">
+                  </a>
+                </div>
+                <div class="card-body px-0">
+                  <h5>
+                    <a href="{{route('eventos.show', {id: evento.id})}}" class="text-dark font-weight-bold">{{evento.nome}}</a>
+                  </h5>
+                  <p>
+                    {{evento.frequencia}}
+                  </p>
+                  <a href="{{route('eventos.show', {id: evento.id})}}" class="text-info text-sm icon-move-right">Ver Mais
+                    <i class="fas fa-arrow-right text-xs ms-1"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+        @end
+        </div>
+      </div>
+    <!-- END Blogs w/ 4 cards w/ image & text & link -->
     <!-- START Blogs w/ 4 cards w/ image & text & link -->
       <div class="container mt-n4">
         <div class="row">

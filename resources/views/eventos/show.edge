@@ -28,7 +28,15 @@
 
           <div class="col-lg-6">
             <a href="{{route('eventos.index')}}"> <i class="fas fa-arrow-left"></i></i>&nbsp;&nbsp;Voltar </a>
-            <h1 class="mb-4">{{evento.nome}} </h1>
+
+            <h5 class="my-4">
+            <a href="{{route('eventos.delete',{id:evento.id})}}"> 
+            <i class="far fa-heart" aria-hidden="true"></i>&nbsp;Favoritar 
+            <i class="fas fa-heart text-primary" aria-hidden="true"></i> Favorito
+            </a>
+            </h5>
+
+            <h1 class="mb-4 mt-n3">{{evento.nome}} </h1>
             <p class="text-capitalize mb-4">	Lorem ipsum consequat quam conubia ad vehicula conubia, tempor metus lacus eros semper curabitur proin sociosqu, id sem condimentum
             tortor sodales pulvinar. aptent enim curabitur nunc blandit etiam lectus mollisgit  cubilia nisl netus, viverra mauris enim potenti etiam facilisis nibh fringilla eu, aliquam dolor rutrum dictum dolor aliquam litora pretium sagittis. purus
             sapien ipsum semper rutrum orci nec lobortis gravida. </p>
@@ -53,8 +61,8 @@
 
           <div class="col-lg-6">
           <div class="d-flex justify-content-end mb-3">
-            <a class="" href="{{route('eventos.edit', {id: evento.id})}}"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar&nbsp;&nbsp;&nbsp;&nbsp;</a>
-            <a class="" href="{{route('eventos.delete',{id:evento.id})}}"> <i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Excluir</a>
+            <a class="mx-2" href="{{route('eventos.edit', {id: evento.id})}}"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar</a>
+            <a class="mx-2" href="{{route('eventos.delete',{id:evento.id})}}"> <i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Excluir</a>
           </div>
             <div class="mapouter mt-2"><div class="gmap_canvas">
             <iframe width="100%" height="400px" id="gmap_canvas"
@@ -67,17 +75,17 @@
         </div>
       </div>
       </section>
+
+
     <!-- END Blogs w/ 4 cards w/ image & text & link -->
-    <div x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
-      <h2>Comentários</h2>
-      <div class="form-floating">
+    <div class="container" x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
+      <h2 class="mb-3">Comentários</h2>
 
-      <textarea class="form-control border border-dark" id="comentario" x-model="current.comentario" placeholder="Deixe um comentário..."> </textarea>
-      <label for="comentario">Deixe um comentário...</label>
-
-      <button class="btn btn-success my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
-
-      </div>
+        <div class="form-floating">
+        <textarea class="form-control border border-dark" id="comentario" x-model="current.comentario" style="height: 100px;" placeholder="Deixe um comentário..."> </textarea>
+        <label for="comentario">Deixe um comentário...</label>
+        <button class="btn btn-primary mt-3 mb-4 my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
+        </div>
 
         <template x-for="c in comentarios">
           @include('components/comentario')
@@ -85,7 +93,6 @@
         {{-- @each(comentario in comentarios)
           @include('components/comentario')
         @end --}}
-
 
     </div>
 
