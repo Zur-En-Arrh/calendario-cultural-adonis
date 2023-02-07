@@ -10,10 +10,11 @@
             <div class="text-center">
               <h1 class="text-white d-lg-none" style="font-size: 34px !important;"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Todos os Eventos</h1>
               <h1 class="text-white d-none d-md-block" style="font-size: 82px !important;"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp; Todos os Eventos</h1>
-            
-            <button type="button" class="btn bg-light mt-2 text-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
-              <i class="fa fa-plus"></i> &nbsp;Criar novo evento
-            </button>
+            @if(auth.user)
+              <button type="button" class="btn bg-light mt-2 text-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
+                <i class="fa fa-plus"></i> &nbsp;Criar novo evento
+              </button>
+            @endif
             </div>
           </div>
         </div>
@@ -29,7 +30,7 @@
             <div class="row justify-space-between py-2">
             <h1 class="text-calendario text-center mb-5"> Encontre o evento perfeito para você. </h1>
                 <div class="container" >
-                  <div class="row"> 
+                  <div class="row">
 
                   <form method="get" action="{{route('eventos.search')}}" class="d-flex">
                     <div class="col-4 p-2">

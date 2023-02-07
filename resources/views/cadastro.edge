@@ -37,10 +37,10 @@
               @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento', value: auth.user})
 
 
-              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], selected:auth.user.sexo})
+              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], selected:auth.user.sexo, classes: 'input-group input-group-outline my-3'})
 
                 <div class="text-center">
-                  <button type="button" class="btn bg-calendario w-100 my-4 mb-2 text-white">Salvar</button>
+                  <button type="submit" class="btn btn-save bg-calendario w-100 my-4 mb-2">Salvar</button>
                 </div>
 
               <br/>
@@ -59,10 +59,10 @@
 
               @!input({name: 'dataNascimento', type: 'date', label: 'Data de Nascimento'})
 
-              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino']})
+              @!select({name: "sexo", label: 'Sexo', options: ['masculino', 'feminino'], classes: 'input-group input-group-outline my-3'})
 
                <div class="text-center">
-                  <button type="submit" class="btn bg-calendario w-100 my-4 mb-2 text-white">Cadastrar</button>
+                  <button type="submit" class="btn-save bg-calendario w-100 my-4 mb-2">Cadastrar</button>
                 </div>
 
               <br/>

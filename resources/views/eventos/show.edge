@@ -32,7 +32,7 @@
             <h5 class="my-4">
             <a href="{{route('eventos.delete',{id:evento.id})}}">
             </a>
-
+              @if(auth.user)
               <div x-data="{ like: {{evento.usuarios.find(u => u.id == auth.user.id) != null}}, routeFavorito: '{{route('eventos.favorito')}}', routeDesfavorito: '{{route('eventos.desfavorito')}}'}">
                 <a href="#" x-on:click="favoritar({{auth.user.id}}, {{evento.id}}, like?routeDesfavorito:routeFavorito);like = ! like">
                   <i :class="like ? 'fas fa-heart' : 'far fa-heart'">
@@ -40,6 +40,7 @@
                   <span x-text="like?'Favorito':'Favoritar'"></span>
                 </a>
               </div>
+              @endif
             </h5>
 
 
@@ -58,7 +59,7 @@
               </div>
               <div class="col-sm-6 ">
                 <h6 class="mb-2"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; Estacionamento: {{evento.estacionamento?'Sim':'Não'}}</h6>
-                <h6 class="mb-2"><i class="fa fa-medkit" aria-hidden="true"></i>&nbsp; Equipe Médica: {{evento.medica?'Sim':'Não'}}</h6>
+                <h6 class="mb-2"><i class="fa fa-medkit" aria-hidden="true"></i>&nbsp; Equipe Médica: {{evento.medico?'Sim':'Não'}}</h6>
                 <h6 class="mb-2"><i class="fa fa-shield" aria-hidden="true"></i>&nbsp; Segurança no local: {{evento.seguranca?'Sim':'Não'}}</h6>
                 <h6 class="mb-2"><i class="fa fa-wheelchair" aria-hidden="true"></i>&nbsp; Acessibilidade para deficientes: {{evento.deficiencia?'Sim':'Não'}}</h6>
                 <h6 class="mb-2"><i class="fa fa-bath" aria-hidden="true"></i>&nbsp; Banheiros públicos: {{evento.banheiro?'Sim':'Não'}}</h6>
@@ -69,10 +70,13 @@
           </div>
 
           <div class="col-lg-6">
-          <div class="d-flex justify-content-end mb-3">
-            <a class="mx-2" href="{{route('eventos.edit', {id: evento.id})}}"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar</a>
-            <a class="mx-2" href="{{route('eventos.delete',{id:evento.id})}}"> <i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Excluir</a>
-          </div>
+          @if(auth.user)
+            <div class="d-flex justify-content-end mb-3">
+              <a class="mx-2" href="{{route('eventos.edit', {id: evento.id})}}"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar</a>
+              <a class="mx-2" href="{{route('eventos.delete',{id:evento.id})}}"> <i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Excluir</a>
+            </div>
+          @endif
+
             <div class="mapouter mt-2"><div class="gmap_canvas">
             <iframe width="100%" height="400px" id="gmap_canvas"
             src="https://maps.google.com/maps?q={{evento.cidade.nome}}&t=&z=13&ie=UTF8&iwloc=&output=embed"
@@ -85,20 +89,23 @@
       </div>
       </section>
 
-
     <!-- END Blogs w/ 4 cards w/ image & text & link -->
-    <div class="container" x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
+    <div class="container">
       <h2 class="mb-3">Comentários</h2>
 
-        <div class="form-floating">
-        <textarea class="form-control border border-dark" id="comentario" x-model="current.comentario" style="height: 100px;" placeholder="Deixe um comentário..."> </textarea>
-        <label for="comentario">Deixe um comentário...</label>
-        <button class="btn btn-primary mt-3 mb-4 my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
-        </div>
+        @if(auth.user)
+          <div class="form-floating" x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
+            <textarea class="form-control border px-2" id="comentario" x-model="current.comentario" style="height: 100px;" placeholder="Deixe um comentário..."> </textarea>
+            <label for="comentario">Deixe um comentário...</label>
+            <button class="btn btn-primary mt-3 mb-4 my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
+          </div>
+        @endif
 
-        <template x-for="c in comentarios">
-          @include('components/comentario')
-        </template>
+          <template x-for="c in comentarios">
+            @include('components/comentario')
+          </template>
+
+          <p class="text-center" x-if="comentarios.length == 0">Sem comentários</p>
         {{-- @each(comentario in comentarios)
           @include('components/comentario')
         @end --}}

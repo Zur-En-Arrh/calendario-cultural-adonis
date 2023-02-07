@@ -6,12 +6,14 @@
         <div>
         <p x-text="atual.comentario"></p>
 
-        <template x-if="{{auth.user.id}} == c.user_id || {{auth.user.id}} == c.userId">
-          <div>
-          <a href="#" onclick="return false;" @click="open = !open;"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar&nbsp;</a>
-          <a href="#" onclick="return false;" @click="$refs.comentario.remove();apagar('{{route('comentario.delete', {id: 'id'})}}'.replace('id', c.id), 'div'+$id(c.id));"><i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Apagar</a>
-          </div>
-        </template>
+        @if(auth.user)
+          <template x-if="{{auth.user.id}} == c.user_id || {{auth.user.id}} == c.userId">
+            <div>
+            <a href="#" onclick="return false;" @click="open = !open;"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar&nbsp;</a>
+            <a href="#" onclick="return false;" @click="$refs.comentario.remove();apagar('{{route('comentario.delete', {id: 'id'})}}'.replace('id', c.id), 'div'+$id(c.id));"><i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Apagar</a>
+            </div>
+          </template>
+        @endif
         </div>
       </template>
 

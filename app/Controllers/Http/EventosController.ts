@@ -198,15 +198,19 @@ export default class EventosController {
 
   }
 
-  public async edit({view, params}) : HttpContextContract {
-    const cidades = await Cidade.all()
-    const cidadesIds = cidades.map((cidade)=>cidade.id)
-    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
+  public async edit({view, params, response}) : HttpContextContract {
     const evento = await Evento.find(params.id)
-    const tipos = await Tipo.all()
-    const tiposIds = tipos.map(tipo => tipo.id)
-    const tiposNomes = tipos.map(tipo => tipo.nome)
-    return view.render('eventos/edit', {evento, tiposIds, tiposNomes, cidadesIds, cidadesNomes})
+    if(evento) {
+      const cidades = await Cidade.all()
+      const cidadesIds = cidades.map((cidade)=>cidade.id)
+      const cidadesNomes = cidades.map((cidade)=>cidade.nome)
+      const tipos = await Tipo.all()
+      const tiposIds = tipos.map(tipo => tipo.id)
+      const tiposNomes = tipos.map(tipo => tipo.nome)
+      return view.render('eventos/edit', {evento, tiposIds, tiposNomes, cidadesIds, cidadesNomes})
+    } else {
+      return response.redirect().toRoute('eventos.index')
+    }
 
   }
 
@@ -216,16 +220,20 @@ export default class EventosController {
     return response.redirect().toRoute('eventos.index')
   }
 
-  public async show({view, params}) : HttpContextContract {
+  public async show({view, params, response}) : HttpContextContract {
     const evento = await Evento.query().where('id', params.id).preload('cidade').preload('usuarios').first()
-    evento.tipo = await Tipo.find(evento.tipoId)
+    if(evento) {
+      evento.tipo = await Tipo.find(evento.tipoId)
 
-    const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
-    const comentarios = query.map(com => {
-      let format = com.createdAt.day+'/'+com.createdAt.month+'/'+com.createdAt.year
-      return {id: com.id, dataFormatada: format, comentario: com.comentario, userId: com.userId, eventoId: com.eventoId, usuario: com.usuario}
-    })
-    return view.render('eventos/show', {evento, comentarios})
+      const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
+      const comentarios = query.map(com => {
+        let format = com.createdAt.day+'/'+com.createdAt.month+'/'+com.createdAt.year
+        return {id: com.id, dataFormatada: format, comentario: com.comentario, userId: com.userId, eventoId: com.eventoId, usuario: com.usuario}
+      })
+      return view.render('eventos/show', {evento, comentarios})
+    } else {
+      return response.redirect().toRoute('eventos.index')
+    }
   }
 
   public async like({response, request}) : HttpContextContract {
