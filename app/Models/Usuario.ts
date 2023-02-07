@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import Evento from './Evento'
 
 export default class Usuario extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +18,16 @@ export default class Usuario extends BaseModel {
 
   @column()
   public sexo: string
+
+
+  @manyToMany(() => Evento, {
+    localKey: 'id',
+    pivotForeignKey: 'user_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'evento_id',
+    pivotTable: 'favoritos'
+  })
+  public eventos: ManyToMany<typeof Evento>
 
   @column({
     consume: (value) => {

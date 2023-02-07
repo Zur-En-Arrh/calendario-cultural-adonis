@@ -9,9 +9,11 @@ export default class UsuariosController {
     return view.render('cadastro')
   }
 
-  public async show({view, request}) : HttpContextContract {
-    const eventos = await Evento.query().limit(4);
-    return view.render('usuarios/profile', {eventos})
+  public async show({auth, view, request}) : HttpContextContract {
+    const eventos = await Evento.query().whereHas('usuarios', (userQuery) => {
+      userQuery.where('id', auth.user.id)
+    })
+    return view.render('usuarios/profile', {eventos: eventos})
   }
 
   public async store({view, request, response}) : HttpContextContract {

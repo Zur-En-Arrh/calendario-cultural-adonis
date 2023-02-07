@@ -1,3 +1,4 @@
+import { ManyToMany } from '@ioc:Adonis/Lucid/Orm';
 import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
@@ -8,10 +9,10 @@ import EventoValidator from "App/Validators/EventoValidator";
 import Tipo from "App/Models/Tipo";
 import Cidade from "App/Models/Cidade";
 import Regiao from "Database/seeders/Regiao";
+import Usuario from '../../Models/Usuario';
 import Regioe from "App/Models/Regiao";
 import Database from "@ioc:Adonis/Lucid/Database";
 import Comentario from "App/Models/Comentario";
-import I18n from '@ioc:Adonis/Addons/I18n';
 
 export default class EventosController {
 
@@ -47,7 +48,6 @@ export default class EventosController {
       file = Application.publicPath(`images/${params.name}`)
     else
       file = Application.resourcesPath(`img/${params.name}`)
-
     return response.download(file)
   }
 
@@ -95,7 +95,6 @@ export default class EventosController {
       file = Application.publicPath(`images/${params.name}`)
     else
       file = Application.resourcesPath(`img/${params.name}`)
-
     return response.download(file)
   }
 
@@ -133,7 +132,6 @@ export default class EventosController {
     const cidadesNomes = cidades.map((cidade)=>cidade.nome)
     const path = Application.tmpPath('/uploads')
     //return view.render('eventos/index', {eventos, path})
-
     return view.render('search', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
   }
 
@@ -144,7 +142,6 @@ export default class EventosController {
       file = Application.publicPath(`images/${params.name}`)
     else
       file = Application.resourcesPath(`img/${params.name}`)
-
     return response.download(file)
   }
 
@@ -220,8 +217,9 @@ export default class EventosController {
   }
 
   public async show({view, params}) : HttpContextContract {
-    const evento = await Evento.query().where('id', params.id).preload('cidade').first()
+    const evento = await Evento.query().where('id', params.id).preload('cidade').preload('usuarios').first()
     evento.tipo = await Tipo.find(evento.tipoId)
+
     const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
     const comentarios = query.map(com => {
       let format = com.createdAt.day+'/'+com.createdAt.month+'/'+com.createdAt.year
@@ -230,4 +228,19 @@ export default class EventosController {
     return view.render('eventos/show', {evento, comentarios})
   }
 
+  public async like({response, request}) : HttpContextContract {
+    const user = await Usuario.find(request.input('userId'))
+    const evento = await Evento.find(request.input('eventoId'))
+    if(evento && user)
+      await evento.related('usuarios').attach([user.id])
+    return response.send({evento: request.input('eventoId'), usuario: request.input('userId')})
+  }
+
+  public async dislike({response, request}) : HttpContextContract {
+    const user = await Usuario.find(request.input('userId'))
+    const evento = await Evento.find(request.input('eventoId'))
+    if(evento && user)
+      await evento.related('usuarios').detach([user.id])
+    return response.send({evento: request.input('eventoId'), usuario: request.input('userId')})
+  }
 }

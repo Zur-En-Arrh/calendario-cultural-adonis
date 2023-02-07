@@ -13,6 +13,13 @@
             <div class="text-center">
               <h1 class="text-white">{{evento.nome}}</h1>
               <h3 class="text-white">{{evento.cidade.nome}} </h3>
+
+                @if(evento.usuarios.find(u => u.id == auth.user.id) != null)
+                  <a class="btn bg-primary text-white" onclick="favoritar({{auth.user.id}}, {{evento.id}}, '{{route('eventos.desfavorito')}}')"> <i class="fas fa-heart"></i> Desfazer</a>
+
+                @else
+                  <a class="btn bg-primary text-white" onclick="favoritar({{auth.user.id}}, {{evento.id}}, '{{route('eventos.favorito')}}')"> <i class="fas fa-heart"></i> Favoritar</a>
+                @endif
             </div>
           </div>
         </div>
@@ -72,7 +79,7 @@
       <h2>Comentários</h2>
       <div class="form-floating">
 
-      <textarea class="form-control border border-dark" id="comentario" x-model="current.comentario" placeholder="Deixe um comentário..."> </textarea>
+      <textarea class="form-control px-2 border" id="comentario" x-model="current.comentario" placeholder="Deixe um comentário..."> </textarea>
       <label for="comentario">Deixe um comentário...</label>
 
       <button class="btn btn-success my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
@@ -122,6 +129,14 @@
           }
         })
 
+    }
+
+    function favoritar(userId, eventoId, url) {
+      console.log('cheguei aqui')
+      axios.post('http://localhost:3333'+url, {userId, eventoId})
+        .then(res => {
+          console.log(res)
+        })
     }
   </script>
 

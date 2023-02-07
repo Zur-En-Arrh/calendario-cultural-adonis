@@ -42,6 +42,8 @@ Route.group(() => {
   Route.get('/delete/:id', 'EventosController.destroy').as('eventos.delete')
   Route.post('/update/:id', 'EventosController.store').as('eventos.update')
 
+  Route.post('/favorito', 'EventosController.like').as('eventos.favorito')
+  Route.post('/desfavoritar', 'EventosController.dislike').as('eventos.desfavorito')
   Route.get('/', 'EventosController.index').as('eventos.index')
 }).prefix('eventos')
 

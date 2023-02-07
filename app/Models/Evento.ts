@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasOne, HasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Tipo from './Tipo'
 import Cidade from './Cidade'
+import Usuario from './Usuario'
 
 export default class Evento extends BaseModel {
   @column({ isPrimary: true })
@@ -53,6 +54,16 @@ export default class Evento extends BaseModel {
     serializeAs: 'cidade'
   })
   public cidade: HasOne<typeof Cidade>
+
+
+  @manyToMany(() => Usuario, {
+    localKey: 'id',
+    pivotForeignKey: 'evento_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'user_id',
+    pivotTable: 'favoritos'
+  })
+  public usuarios: ManyToMany<typeof Usuario>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
