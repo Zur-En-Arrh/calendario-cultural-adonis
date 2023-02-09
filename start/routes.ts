@@ -40,10 +40,11 @@ Route.group(() => {
     Route.get('/edit/:id', 'EventosController.edit').as('eventos.edit')
     Route.get('/delete/:id', 'EventosController.destroy').as('eventos.delete')
     Route.post('/update/:id', 'EventosController.store').as('eventos.update')
-    Route.post('/favorito', 'EventosController.like').as('eventos.favorito')
-    Route.post('/desfavoritar', 'EventosController.dislike').as('eventos.desfavorito')
   }).middleware('auth:web')
 
+
+  Route.post('/favorito', 'EventosController.like').as('eventos.favorito')
+  Route.post('/desfavoritar', 'EventosController.dislike').as('eventos.desfavorito')
 
   Route.get('/show/:id', 'EventosController.show').as('eventos.show')
   Route.get('/search', 'EventosController.search').as('eventos.search')

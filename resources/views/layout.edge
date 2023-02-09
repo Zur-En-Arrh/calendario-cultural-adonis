@@ -52,6 +52,8 @@
           </a>
         </li>
 
+
+        @if(!auth.user)
         <li class="nav-item ms-lg-auto">
           <a class="nav-link nav-link-icon me-2" href="{{route('auth.create')}}" target="_self">
             <i class="fa fa-user-circle" aria-hidden="true"></i>
@@ -59,7 +61,6 @@
           </a>
         </li>
 
-        @if(!auth.user)
         <li class="nav-item ms-lg-auto">
           <a class="nav-link nav-link-icon me-2" href="{{route('usuario.create')}}" target="_self">
             <i class="fa fa-sign-in" aria-hidden="true"></i>
