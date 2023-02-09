@@ -34,7 +34,7 @@
             </a>
               @if(auth.user)
               <div x-data="{ like: {{evento.usuarios.find(u => u.id == auth.user.id) != null}}, routeFavorito: '{{route('eventos.favorito')}}', routeDesfavorito: '{{route('eventos.desfavorito')}}'}">
-                <a href="#" x-on:click="favoritar({{auth.user.id}}, {{evento.id}}, like?routeDesfavorito:routeFavorito);like = ! like">
+                <a href="#" x-on:click="favoritar({{auth.user.id}}, {{evento.id}}, like?routeDesfavorito:routeFavorito, like?'Removido':'Adicionado aos favoritos');like = ! like">
                   <i :class="like ? 'fas fa-heart' : 'far fa-heart'">
                   </i>
                   <span x-text="like?'Favorito':'Favoritar'"></span>
@@ -147,12 +147,11 @@
 
     }
 
-    function favoritar(userId, eventoId, url) {
+    function favoritar(userId, eventoId, url, msg) {
       console.log('cheguei aqui')
       axios.post('http://localhost:3333'+url, {userId, eventoId})
         .then(res => {
-          console.log(res)
-          alert('Evento favoritado')
+          console.log(res, msg)
         })
     }
   </script>
