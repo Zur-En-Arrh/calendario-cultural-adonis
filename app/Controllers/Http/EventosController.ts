@@ -175,6 +175,8 @@ export default class EventosController {
       evento.deficiencia = eventoPayload.deficiencia
       evento.seguranca = eventoPayload.seguranca
       evento.caixa = eventoPayload.caixa
+      evento.descricao =  eventoPayload.descricao
+      evento.endereco =  eventoPayload.endereco
       evento.save()
       return response.redirect().toRoute('eventos.index')
     } else {
@@ -191,6 +193,8 @@ export default class EventosController {
         deficiencia: eventoPayload.deficiencia,
         seguranca: eventoPayload.seguranca,
         caixa: eventoPayload.caixa,
+        descricao: eventoPayload.descricao,
+        endereco: eventoPayload.endereco
       })
       await eventoPayload.foto.move(Application.publicPath('images'))
       return response.redirect().toRoute('eventos.index')

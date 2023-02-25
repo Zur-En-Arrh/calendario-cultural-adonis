@@ -1,0 +1,6 @@
+<textarea placeholder="{{label}}" name="{{name}}" class="{{classes}}
+  @if(flashMessages.has('errors.'+name))
+    border-danger
+  @endif
+   ">{{value}}</textarea>
+@!error({name})

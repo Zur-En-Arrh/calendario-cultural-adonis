@@ -12,9 +12,12 @@
 
                 @!input({label: 'Nome', name: 'nome' })
                 @!select({label: 'Cidade', name: 'cidadeId', texts: cidadesNomes, options: cidadesIds, classes: 'input-group input-group-outline my-3'})
+                @!input({label: 'Endereço', name: 'endereco' })
+
                 @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], classes: 'input-group input-group-outline my-3'})
                 @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes, classes: 'input-group input-group-outline my-3'})
                 @!input({label:'Foto', 'type': 'file', 'name': 'foto'})
+                @!textarea({label: 'Fale sobre mais sobre o evento...', name: 'descricao', classes: 'form-control border border-gray', value: ''})
 
                 @!radio({checked: false, label: 'Estacionamento', name: 'estacionamento', options: [true,false], labels: ['Sim', 'Não']})
                 @!radio({checked: false, label: 'Acessibilidade para portadores de deficiência física', name: 'deficiencia', options: [true,false], labels: ['Sim', 'Não']})

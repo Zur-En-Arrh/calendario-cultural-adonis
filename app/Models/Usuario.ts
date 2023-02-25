@@ -19,6 +19,9 @@ export default class Usuario extends BaseModel {
   @column()
   public sexo: string
 
+  @column()
+  public endereco: string
+
 
   @manyToMany(() => Evento, {
     localKey: 'id',

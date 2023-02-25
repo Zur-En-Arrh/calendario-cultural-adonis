@@ -26,6 +26,7 @@ export default class UsuarioValidator {
   public schema = schema.create({
     nome: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(1), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
     email: schema.string({}, [rules.trim(), rules.email()]),
+    endereco: schema.string({}, [rules.trim(), rules.minLength(5), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç!?., ]*$)(?!.*[<>'"/;`%])/)]),
     dataNascimento: schema.date({
       format: 'yyyy-MM-dd'
     }, [rules.before('today')]),
