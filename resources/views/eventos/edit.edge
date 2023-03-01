@@ -27,7 +27,7 @@
 
               @!select({label: 'Frequencia', name: 'frequencia', options: ['anual', 'quinzenal', 'mensal'], selected:evento.frequencia, classes: 'input-group input-group-outline my-3'})
               @!select({label: 'Tipo', name: 'tipoId', options: tiposIds, texts: tiposNomes, selected: evento.tipoId, classes: 'input-group input-group-outline my-3'})
-              @!textarea({label: 'Fale sobre mais sobre o evento...', name: 'descricao', classes: 'form-control border border-gray', value: evento.descricao})
+              @!textarea({label: 'Fale sobre mais sobre o evento...', name: 'descricao', classes: 'form-control border border-gray mb-4 ', value: evento.descricao})
 
               @!radio({checked: evento.estacionamento, label: 'Estacionamento', name: 'estacionamento', options: [true,false], labels: ['Sim', 'Não']})
               @!radio({checked: evento.deficiencia, label: 'Acessibilidade para portadores de deficiência física', name: 'deficiencia', options: [true,false], labels: ['Sim', 'Não']})
