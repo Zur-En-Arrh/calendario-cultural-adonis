@@ -1,0 +1,119 @@
+@layout('layout_sem_footer')
+@section('conteudo')
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <div style="height: 100vh;">
+      <div id="map" style="height: 100%;"></div>
+    </div>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4&callback=initMap&v=weekly" defer> </script>
+
+  <script>
+
+  let geocoder;
+  let urlEventos = '{{route('eventos.todos')}}'
+  let urlFoto = 'http://localhost:3333{{route('eventos.foto', {path:'public', name:':img'})}}'
+  let endereco = '{{auth.user.endereco}}'
+  console.log(endereco, urlFoto)
+
+  const tiposIcones = {
+  1: 'https://icon-library.com/images/batman-logo-icon/batman-logo-icon-5.jpg',
+  2: 'https://fortnite-api.com/images/cosmetics/br/glider_id_299_cavernarmoredmale/smallicon.png',
+  3: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/bat-383-1089588.png',
+  4: 'https://icons-for-free.com/download-icon-batman+hero+man+saver+super+superhero+icon-1320195495753243967_0.svg',
+  5: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLJ8p1PwZMl8JcLSS5RPYSyiPxopqjF50haruWSYjZeyeQawTqsk8S9c_sZ8ZH_WPOWI&usqp=CAU',
+  6: 'https://w7.pngwing.com/pngs/92/644/png-transparent-green-lantern-corps-sinestro-flash-superhero-the-green-lantern-text-trademark-logo-thumbnail.png',
+  7: 'https://www.freepnglogos.com/uploads/wonder-woman-logo-4.png',
+  8: 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/twkuvbsktvldzsapqfla'
+  }
+
+
+  async function initMap() {
+    geocoder = new google.maps.Geocoder()
+    let req = await axios(urlEventos)
+    let eventos = req.data
+    // console.log(req)
+
+    const myLatLng = { lat: {{auth.user.lat}}, lng: {{auth.user.lng}}};
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 15,
+      center: myLatLng,
+    });
+
+  const locationButton = document.createElement("button");
+  locationButton.setAttribute("id", 'locationButton');
+  locationButton.innerHTML = "<i class='fa fa-map-marker'></i>&nbsp; Encontrar minha localização";
+  locationButton.classList.add("custom-map-control-button", "btn", "bg-gradient-primary", "w-auto");
+
+
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+  
+    locationButton.addEventListener("click", () => {
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            const infoWindow = new google.maps.InfoWindow()
+            infoWindow.setPosition(pos);
+            infoWindow.setContent("Location found.");
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    });
+
+
+    // new google.maps.Marker({
+    //   position: myLatLng,
+    //   map,
+    //   title: "Você mora aqui: " + endereco,
+    // });
+
+    eventos.forEach(evento => {
+        // console.log(evento.endereco)
+        geocoder.geocode({'address': evento.endereco}, (results, status) => {
+        if (status == 'OK') {
+          const content = `<img height="100px" widht="100px" src="${urlFoto.replace(':img', evento.foto)}">`;
+          const infoWindow = new google.maps.InfoWindow({content})
+
+          // map.setCenter(results[0].geometry.location);
+          var marker = new google.maps.Marker({
+              map: map,
+              title: evento.title,
+              // icon: tiposIcones[evento.tipo_id],
+              position: results[0].geometry.location
+          })
+
+          // console.log(tiposIcones[evento.tipo_id], evento)
+
+          marker.addListener('click', () => {
+            infoWindow.open(map, marker)
+          })
+
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+    })
+      
+    });
+
+    
+    
+  }
+
+  window.initMap = initMap;
+  </script>
+
+
+@include('eventos/create')
+  <!-- End Page -->
+<script src='https://code.jquery.com/jquery-1.12.0.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js'></script>
+@endsection

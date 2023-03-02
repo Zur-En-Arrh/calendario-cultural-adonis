@@ -60,6 +60,12 @@ export default class Usuario extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @column()
+  public lat: number 
+
+  @column()
+  public lng: number 
+
   @beforeSave()
   public static async hashPassword (usuario: Usuario) {
     if (usuario.$dirty.password) {

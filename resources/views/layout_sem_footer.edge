@@ -13,6 +13,7 @@
 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 <!-- Material Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css'>
 
@@ -25,10 +26,11 @@
 
 <body>
 <!-- Navbar Transparent -->
+<!-- Navbar Transparent -->
 <div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
 <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
   <div class="container-fluid px-0">
-    <a class="navbar-brand font-weight-bolder ms-sm-3" href="./index.html" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_self">
+    <a class="navbar-brand font-weight-bolder ms-sm-3" href="#" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_self">
       <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; Calendário Cultural
     </a>
     <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,49 +44,60 @@
       <ul class="navbar-nav navbar-nav-hover ms-auto">
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./home.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
             <i class="fa fa-home" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Home</p>
           </a>
         </li>
 
+
+        @if(!auth.user)
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./login.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('auth.create')}}" target="_self">
             <i class="fa fa-user-circle" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Login</p>
           </a>
         </li>
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./cadastro.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('usuario.create')}}" target="_self">
             <i class="fa fa-sign-in" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Cadastro</p>
           </a>
         </li>
+        @else
+        <li class="nav-item ms-lg-auto">
+          <a class="nav-link nav-link-icon me-2" href="{{route('auth.logout')}}" target="_self">
+            <i class="fa fa-sign-out-alt" aria-hidden="true"></i>
+            <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Sair</p>
+          </a>
+        </li>
+
+        @endif
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./profile.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('usuario.perfil')}}" target="_self">
             <i class="fas fa-id-card"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Meu Perfil</p>
           </a>
         </li>
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./eventos.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('eventos.index')}}" target="_self">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Eventos</p>
           </a>
         </li>
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./page.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('mapa.index')}}" target="_self">
             <i class="fa fa-map" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Mapa</p>
           </a>
         </li>
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="./page.php" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Configurações</p>
           </a>

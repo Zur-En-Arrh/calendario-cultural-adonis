@@ -34,3 +34,10 @@ button.btn-save:hover {
 .text-calendario {
     color: #311e41;
 }
+
+#locationButton {
+  position: absolute !important;
+  top: 90% !important;
+  width: 200px;
+
+}

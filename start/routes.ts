@@ -25,6 +25,7 @@ Route.get('/', async ({ view }) => {
 })
 
 Route.get('/images/:path/:name', 'EventosController.foto').as('eventos.foto')
+
 Route.group(() => {
   Route.get('/editar', 'UsuariosController.edit').as('usuario.edit')
   Route.get('/logout', 'AuthController.logout').as('auth.logout')
@@ -42,15 +43,16 @@ Route.group(() => {
     Route.post('/update/:id', 'EventosController.store').as('eventos.update')
   }).middleware('auth:web')
 
-
   Route.post('/favorito', 'EventosController.like').as('eventos.favorito')
   Route.post('/desfavoritar', 'EventosController.dislike').as('eventos.desfavorito')
 
   Route.get('/show/:id', 'EventosController.show').as('eventos.show')
   Route.get('/search', 'EventosController.search').as('eventos.search')
   Route.get('/', 'EventosController.index').as('eventos.index')
+  Route.get('/todos', 'EventosController.getAll').as('eventos.todos')
 
 }).prefix('eventos')
+
 
 Route.group(() => {
   Route.post('/store', 'ComentariosController.store').as('comentario.store')
@@ -67,3 +69,5 @@ Route.post('/cadastro', 'UsuariosController.store').as('usuario.store')
 Route.get('/login', 'AuthController.create').as('auth.create')
 
 Route.post('/login', 'AuthController.store').as('auth.store')
+
+Route.get('/mapa', ({view}) => return view.render('mapa')).as('mapa.index')

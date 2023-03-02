@@ -255,4 +255,10 @@ export default class EventosController {
       await evento.related('usuarios').detach([user.id])
     return response.send({evento: request.input('eventoId'), usuario: request.input('userId')})
   }
+
+  public async getAll({response }): HttpContextContract {
+    const eventos = await Evento.all()
+    return response.send(eventos)
+  }
+
 }
