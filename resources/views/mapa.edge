@@ -15,16 +15,39 @@
   let endereco = '{{auth.user.endereco}}'
   console.log(endereco, urlFoto)
 
+  let urlIcon = 'http://localhost:3333/images/resource/';
   const tiposIcones = {
-  1: 'https://icon-library.com/images/batman-logo-icon/batman-logo-icon-5.jpg',
-  2: 'https://fortnite-api.com/images/cosmetics/br/glider_id_299_cavernarmoredmale/smallicon.png',
-  3: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/bat-383-1089588.png',
-  4: 'https://icons-for-free.com/download-icon-batman+hero+man+saver+super+superhero+icon-1320195495753243967_0.svg',
-  5: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLJ8p1PwZMl8JcLSS5RPYSyiPxopqjF50haruWSYjZeyeQawTqsk8S9c_sZ8ZH_WPOWI&usqp=CAU',
-  6: 'https://w7.pngwing.com/pngs/92/644/png-transparent-green-lantern-corps-sinestro-flash-superhero-the-green-lantern-text-trademark-logo-thumbnail.png',
-  7: 'https://www.freepnglogos.com/uploads/wonder-woman-logo-4.png',
-  8: 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/twkuvbsktvldzsapqfla'
+  1: urlIcon + 'mark_esporte.png',
+  2: urlIcon + 'mark_militar.png',
+  3: urlIcon + 'mark_religioso.png',
+  4: urlIcon + 'mark_cultural.png',
+  5: urlIcon + 'mark_historico.png',
+  6: urlIcon + 'mark_civil.png',
+  7: urlIcon + 'mark_musical.png',
+  8: urlIcon + 'mark_politico.png'
   }
+  const cidades = {
+  1: 'Resende',
+  2: 'Niterói',
+  3: 'Japeri',
+  4: 'Petrópolis',
+  5: 'Mesquita',
+  6: 'Rio de Janeiro',
+  7: 'Belford Roxo',
+  8: 'Nova Iguaçu',
+  9: 'Paraty'
+  }
+  const tiposEventos = {
+  1: 'Esportivo',
+  2: 'Militar',
+  3: 'Religioso',
+  4: 'Cultural',
+  5: 'Histórico',
+  6: 'Civil',
+  7: 'Musical',
+  8: 'Político'
+  }
+
 
 
   async function initMap() {
@@ -33,7 +56,8 @@
     let eventos = req.data
     // console.log(req)
 
-    const myLatLng = { lat: {{auth.user.lat}}, lng: {{auth.user.lng}}};
+    // const myLatLng = { lat: {{auth.user.lat}}, lng: {{auth.user.lng}}};
+    const myLatLng = { lat: -22.9036147, lng: -43.1944468 };
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 15,
       center: myLatLng,
@@ -58,7 +82,7 @@
             };
             const infoWindow = new google.maps.InfoWindow()
             infoWindow.setPosition(pos);
-            infoWindow.setContent("Location found.");
+            infoWindow.setContent("<div style='height: 35px; border-radius: 3.5px;' class='bg-white p-2 border bold'><i class='fas fa-home'></i>&nbsp; Localização aproximada.</div>");
             infoWindow.open(map);
             map.setCenter(pos);
           }
@@ -80,14 +104,59 @@
         // console.log(evento.endereco)
         geocoder.geocode({'address': evento.endereco}, (results, status) => {
         if (status == 'OK') {
-          const content = `<img height="100px" widht="100px" src="${urlFoto.replace(':img', evento.foto)}">`;
+
+          
+          // const content = `<img height="100px" widht="100px" src="${urlFoto.replace(':img', evento.foto)}">`;
+          const content = `
+<div class="wrapper">
+    		
+    		<div class="card radius shadowDepth1">
+    			<div class="card__image border-tlr-radius">
+    				<img src="${urlFoto.replace(':img', evento.foto)}" alt="image" class="border-tlr-radius">
+                </div>
+
+          <div class="card__content card__padding">
+          
+              <div class="card__share">
+                  <div class="card__social">  
+                      <a class="share-icon facebook" href="#"><span class="fa fa-facebook"></span></a>
+                      <a class="share-icon twitter" href="#"><span class="fa fa-twitter"></span></a>
+                      <a class="share-icon googleplus" href="#"><span class="fa fa-google-plus"></span></a>
+                  </div>
+                  <a id="share" class="share-toggle share-icon" href="#"></a>
+              </div>
+
+              <div class="card__meta">
+                <h5 style="font-size: 14px;" class="text-calendario">${tiposEventos[(evento.tipo_id)]}</h5>
+              </div>
+
+              <article class="card__article mb-n4">
+                <h6 style="font-size: 14px;">${(evento.nome)}</h6>
+                <p style="font-size: 12px;">${(evento.descricao).substring(0, 54)+"..."}</p>
+              </article>
+
+          </div>
+
+            
+              <div class="card__action mb-2 ">
+                    <a href="http://127.0.0.1:3333/eventos/show/${(evento.id)}">
+                      <h6 style="font-size: 14px;">Ver Mais</h6>
+                    </a>
+              </div>
+            
+
+    		</div>
+        
+    	</div>
+          `;
+
           const infoWindow = new google.maps.InfoWindow({content})
 
           // map.setCenter(results[0].geometry.location);
           var marker = new google.maps.Marker({
               map: map,
               title: evento.title,
-              // icon: tiposIcones[evento.tipo_id],
+              icon: tiposIcones[evento.tipo_id],
               position: results[0].geometry.location
           })
 
@@ -111,6 +180,19 @@
   window.initMap = initMap;
   </script>
 
+
+    <script>
+      $(document).ready(function($) {
+
+      $('.card__share > a').on('click', function(e){ 
+        e.preventDefault() // prevent default action - hash doesn't appear in url
+          $(this).parent().find( 'div' ).toggleClass( 'card__social--active' );
+        $(this).toggleClass('share-expanded');
+        });
+
+      });
+
+    </script>
 
 @include('eventos/create')
   <!-- End Page -->
