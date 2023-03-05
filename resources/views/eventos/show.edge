@@ -69,12 +69,12 @@
           </div>
 
           <div class="col-lg-6">
-          @if(auth.user)
+          @can('EventoPolicy.edit', auth.user)
             <div class="d-flex justify-content-end mb-3">
               <a class="mx-2" href="{{route('eventos.edit', {id: evento.id})}}"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar</a>
               <a class="mx-2" href="{{route('eventos.delete',{id:evento.id})}}"> <i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Excluir</a>
             </div>
-          @endif
+          @end
 
             <div class="mapouter mt-2"><div class="gmap_canvas">
             <iframe width="100%" height="400px" id="gmap_canvas"
@@ -92,18 +92,18 @@
     <div class="container">
       <h2 class="mb-3">Comentários</h2>
           {{--comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')--}}
-          <div class="form-floating" x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user.nome}}'}, userId: {{auth.user.id}}, eventoId: {{evento.id}}}, comentarios: [{{comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')}}] }">
+          <div class="form-floating" x-data="$store.secao" >
             @if(auth.user)
+              <div x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user?.nome}}'}, eventoId: {{evento.id}}, userId: {{auth.user.id}} } }">
               <textarea class="form-control border px-2" id="comentario" x-model="current.comentario" style="height: 100px;" placeholder="Deixe um comentário..."> </textarea>
-              <label for="comentario">Deixe um comentário...</label>
-              <button class="btn btn-primary mt-3 mb-4 my-2" @click="current.id = await save(current); current.dataFormatada = 'Agora'; comentarios.push({...current}); current.comentario = ''">Enviar</button>
+              <!-- <label for="comentario">Deixe um comentário...</label> -->
+              <button class="btn btn-primary mt-3 mb-4 my-2" @click="await save(current); current.comentario =''">Enviar</button>
+              </div>
             @endif
 
-          <template x-for="c in comentarios">
-            @include('components/comentario')
-          </template>
-
-
+            <template x-for="c in comentarios">
+              @include('components/comentario')
+            </template>
           </div>
 
 
@@ -116,37 +116,94 @@
   </div>
 
   <script>
+    const socket = io()
+
+    socket.on('novo:comentario', (data) => {
+      //desenharComentario(data)
+      console.log(data)
+      if(data.eventoId == window.eventoId)
+        window.comentarios.push(data)
+      console.log('Um novo comentario chegou', window.comentarios)
+    })
+
+    socket.on('mudanca:comentario', (data) => {
+      console.log('o que mudou', data)
+      const p = document.getElementById('com-'+data.id)
+      if(p)
+        p.innerText = data.comentario
+      /*window.comentarios.forEach(c => {
+        if(c.id == data.id) {
+          console.log('mudou')
+          c.comentario = data.comentario
+        }
+      })
+      console.log('Mudança em algum comentario', window.comentarios, Alpine.store('secao').salvarLista(window.comentarios))
+      */
+
+    })
+
+    socket.on('delecao:comentario', (data) => {
+      console.log('Delecao', data)
+      window.comentarios = window.comentarios.map(c => {
+        if(c && c.id != data.id)
+          return c
+      })
+      console.log(window.comentarios, Alpine.store('secao').salvarLista(window.comentarios))
+      const div = document.getElementById('div-'+data.id)
+      if(div)
+        div.parentElement.removeChild(div)
+    })
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('secao', {
+          eventoId: {{evento.id}},
+          init() {
+            const req = axios('http://localhost:3333/comentario/evento/{{evento.id}}')
+              .then(res => {
+                this.comentarios = res.data
+                window.comentarios = this.comentarios
+                window.eventoId = this.eventoId
+              })
+          },
+          comentarios: [],
+          async atualizar(obj, url) {
+            axios.post('http://localhost:3333'+url, obj)
+              .then(res => {
+                console.log(res)
+                if(res.status == '200') {
+                  alert('Atualizado com sucesso')
+                }
+              })
+
+          },
+          async apagar(c) {
+            console.log('http://localhost:3333/comentario/delete/'+c.id)
+            axios('http://localhost:3333/comentario/delete/'+c.id)
+              .then(res => {
+                console.log(res)
+                if(res.status == '200') {
+                  alert('Apagado com sucesso')
+                }
+            })
+
+          },
+          salvarLista(comentarios) {
+            this.comentarios = comentarios
+          }
+        })
+
+
+    })
+
+
     async function save(com) {
       console.log("salvando...", com)
       const res = await axios.post('http://localhost:3333{{route('comentario.store')}}', com)
       console.log("RESULTADO", res.data)
-      return res.data.$original.id
     }
 
-    async function apagar(url, id) {
-      console.log('http://localhost:3333'+url, id)
-      axios('http://localhost:3333'+url)
-        .then(res => {
-          console.log(res)
-          if(res.status == '200') {
-            alert('Apagado com sucesso')
-          }
-      })
-
-    }
-
-    async function atualizar(obj, url) {
 
 
-      axios.post('http://localhost:3333'+url, obj)
-        .then(res => {
-          console.log(res)
-          if(res.status == '200') {
-            alert('Atualizado com sucesso')
-          }
-        })
-
-    }
 
     function favoritar(userId, eventoId, url, msg) {
       console.log('cheguei aqui')
@@ -154,6 +211,10 @@
         .then(res => {
           console.log(res, msg)
         })
+    }
+
+    function desenharComentario(comentario) {
+
     }
   </script>
 

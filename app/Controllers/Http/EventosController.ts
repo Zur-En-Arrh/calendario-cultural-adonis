@@ -1,7 +1,3 @@
-import { ManyToMany } from '@ioc:Adonis/Lucid/Orm';
-import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
 import { HttpContext } from "@adonisjs/core/build/standalone";
 import Application from '@ioc:Adonis/Core/Application';
 import Evento from '../../Models/Evento'
@@ -41,15 +37,6 @@ export default class EventosController {
     return view.render('eventos', {path, tipos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
   }
 
-  public async foto({view, response, params}) : HttpContextContract {
-    response.header('Content-Type', 'image/gif');
-    let file
-    if(params.path == 'public')
-      file = Application.publicPath(`images/${params.name}`)
-    else
-      file = Application.resourcesPath(`img/${params.name}`)
-    return response.download(file)
-  }
 
   public async search({view, params, request}) : HttpContextContract {
     console.log(params,request.all())
@@ -98,53 +85,6 @@ export default class EventosController {
     return response.download(file)
   }
 
-  public async search({view, params, request}) : HttpContextContract {
-    console.log(params,request.all())
-    let eventos = 'SELECT * FROM eventos'
-    let where = false
-
-    if(request.input('busca')){
-      eventos += ' WHERE nome LIKE "%'+ request.input('busca') +'%"'
-      where = true
-    }
-    if(request.input('tipo')){
-      eventos += where ? ' AND tipo_id = ' + request.input('tipo') : ' WHERE tipo_id = ' + request.input('tipo')
-      where = true
-    }
-    if(request.input('regiao')){
-      eventos += where ? ' AND cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')' : ' WHERE cidade_id IN (SELECT id FROM cidades WHERE regiao_id = ' + request.input('regiao') + ')'
-      where = true
-    }
-    if(request.input('cidade')){
-      eventos += where ? ' AND cidade_id = ' + request.input('cidade') : ' WHERE cidade_id = ' + request.input('cidade')
-    }
-
-    eventos = await Database.rawQuery(eventos)
-
-    const categorias = await Tipo.all()
-    const cidades = await Cidade.all()
-    const regioes = await Regioe.all()
-    const tiposIds = categorias.map(tipo => tipo.id)
-    const tiposNomes = categorias.map(tipo => tipo.nome)
-    const regioesIds = regioes.map(regioes => regioes.id)
-    const regioesNomes = regioes.map(regioes => regioes.nome)
-    const cidadesIds = cidades.map((cidade)=>cidade.id)
-    const cidadesNomes = cidades.map((cidade)=>cidade.nome)
-    const path = Application.tmpPath('/uploads')
-    //return view.render('eventos/index', {eventos, path})
-    return view.render('search', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
-  }
-
-  public async foto({view, response, params}) : HttpContextContract {
-    response.header('Content-Type', 'image/gif');
-    let file
-    if(params.path == 'public')
-      file = Application.publicPath(`images/${params.name}`)
-    else
-      file = Application.resourcesPath(`img/${params.name}`)
-    return response.download(file)
-  }
-
   public async create({view}) : HttpContextContract {
     const tipos = await Tipo.all()
     const tiposIds = tipos.map(tipo => tipo.id)
@@ -152,7 +92,12 @@ export default class EventosController {
     return view.render('eventos/create', {tiposIds, tiposNomes})
   }
 
-  public async store({request, view, response, params}) : HttpContextContract {
+  public async store({auth, bouncer, params, request, response}) : HttpContextContract {
+
+    if(await bouncer.with('EventoPolicy').denies('destroy', auth.user)) {
+      return response.redirect().toRoute('eventos.show', {id: params.id})
+    }
+
     const id = params.id
     const eventoPayload = await request.validate(EventoValidator)
     if(id)
@@ -202,7 +147,12 @@ export default class EventosController {
 
   }
 
-  public async edit({view, params, response}) : HttpContextContract {
+  public async edit({auth, bouncer, params, response, view}) : HttpContextContract {
+
+    if(await bouncer.with('EventoPolicy').denies('edit', auth.user)) {
+      return response.redirect().toRoute('eventos.show', {id: params.id})
+    }
+
     const evento = await Evento.find(params.id)
     if(evento) {
       const cidades = await Cidade.all()
@@ -218,7 +168,12 @@ export default class EventosController {
 
   }
 
-  public async destroy({params, response}) : HttpContextContract {
+  public async destroy({auth, bouncer, params, response}) : HttpContextContract {
+
+    if(await bouncer.with('EventoPolicy').denies('destroy', auth.user)) {
+      return response.redirect().toRoute('eventos.show', {id: params.id})
+    }
+
     const evento = await Evento.find(params.id)
     await evento.delete()
     return response.redirect().toRoute('eventos.index')
@@ -229,12 +184,12 @@ export default class EventosController {
     if(evento) {
       evento.tipo = await Tipo.find(evento.tipoId)
 
-      const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
+      /*const query = await Comentario.query().where('eventoId', params.id).preload('usuario').orderBy('createdAt', 'desc')
       const comentarios = query.map(com => {
         let format = com.createdAt.day+'/'+com.createdAt.month+'/'+com.createdAt.year
         return {id: com.id, dataFormatada: format, comentario: com.comentario, userId: com.userId, eventoId: com.eventoId, usuario: com.usuario}
-      })
-      return view.render('eventos/show', {evento, comentarios})
+      })*/
+      return view.render('eventos/show', {evento})
     } else {
       return response.redirect().toRoute('eventos.index')
     }

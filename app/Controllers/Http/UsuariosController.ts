@@ -37,8 +37,8 @@ export default class UsuariosController {
     return response.redirect().toRoute('auth.create')
   }
 
-  public async edit({view, request, auth}) {
-    //console.log("User-->", auth.user)
+  public async edit({auth, view}) {
+    console.log("User-->", auth.user)
     return view.render('cadastro')
   }
 }

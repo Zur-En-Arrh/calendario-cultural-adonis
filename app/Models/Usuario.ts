@@ -22,6 +22,8 @@ export default class Usuario extends BaseModel {
   @column()
   public endereco: string
 
+  @column()
+  public admin: boolean
 
   @manyToMany(() => Evento, {
     localKey: 'id',

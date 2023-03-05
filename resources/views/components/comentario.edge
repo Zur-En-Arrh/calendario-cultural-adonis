@@ -1,16 +1,16 @@
-    <div class="bg-light p-3 my-3" x-ref="comentario" x-data="{open: false, urlApagar: '{{route('comentario.delete', {id: 'id'})}}', atual: {userId: c.user_id, eventoId: c.evento_id, ...c}}">
+    <div class="bg-light p-3 my-3" :id="divId" x-ref="comentario" x-data="{open: false, urlApagar: '{{route('comentario.delete', {id: 'id'})}}', divId: 'div-'+c.id, id: 'com-'+c.id, atual: {userId: c.user_id, eventoId: c.evento_id, ...c}}">
       <h4 class="my-0" x-text="c.usuario.nome"> </h4>
       <i class="fa fa-clock"></i> <small class="my-0" x-text="c.dataFormatada"></small>
 
       <template x-if="!open">
         <div>
-        <p x-text="atual.comentario"></p>
+        <p :id="id" x-text="c.comentario"></p>
 
         @if(auth.user)
           <template x-if="{{auth.user.id}} == c.user_id || {{auth.user.id}} == c.userId">
             <div>
             <a href="#" onclick="return false;" @click="open = !open;"> <i class="fa fa-pen" aria-hidden="true"></i>&nbsp;Editar&nbsp;</a>
-            <a href="#" onclick="return false;" @click="$refs.comentario.remove();apagar('{{route('comentario.delete', {id: 'id'})}}'.replace('id', c.id), 'div'+$id(c.id));"><i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Apagar</a>
+            <a href="#" onclick="return false;" @click="apagar(c);"><i class="fas fa-trash" aria-hidden="true"></i>&nbsp;Apagar</a>
             </div>
           </template>
         @endif

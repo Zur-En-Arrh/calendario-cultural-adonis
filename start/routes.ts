@@ -56,11 +56,14 @@ Route.group(() => {
   Route.post('/store', 'ComentariosController.store').as('comentario.store')
   Route.get('/delete/:id', 'ComentariosController.destroy').as('comentario.delete')
   Route.post('/edit/:id', 'ComentariosController.update').as('comentario.update')
+  Route.get('/evento/:id', 'ComentariosController.getByEvent').as('comentario.evento')
 }).prefix('comentario')
 
   //.middleware('auth:web')
 
-
+Route.get('/mapa', ({view}) => {
+  return view.render('mapa')
+})
 
 Route.get('/cadastro', 'UsuariosController.create').as('usuario.create')
 Route.post('/cadastro', 'UsuariosController.store').as('usuario.store')

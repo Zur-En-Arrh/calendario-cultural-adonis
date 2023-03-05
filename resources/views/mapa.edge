@@ -1,0 +1,29 @@
+@layout('layout_sem_footer')
+@section('conteudo')
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <div id="map"></div>
+
+    <!--
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises
+      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4&callback=initMap&v=weekly"
+      defer
+    ></script>
+
+    <script>
+    let map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8,
+      });
+    }
+
+    window.initMap = initMap;
+    </script>
+@end
