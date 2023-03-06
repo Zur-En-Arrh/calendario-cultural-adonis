@@ -8,6 +8,9 @@ export default class Tipo extends BaseModel {
   @column()
   public nome: string
 
+  @column()
+  public iconUrl: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

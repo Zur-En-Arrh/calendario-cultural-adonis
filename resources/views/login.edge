@@ -1,4 +1,4 @@
-@layout('layout')
+@layout('layout_sem_footer')
 
 @section('conteudo')
 
@@ -15,13 +15,16 @@
               </div>
             </div>
             <div class="card-body">
+            @if(flashMessages.has('erro'))
+            <p class="text-danger text-center">{{flashMessages.get('erro')}}</p>
+            @endif
               <form role="form" method="post" action="{{route('auth.store')}}" class="text-start">
                  @!input({name: 'email', label: 'E-mail', type: 'email'})
 
                   @!input({name: 'password', label: 'Senha', type: 'password'})
 
                 <div class="form-check form-switch d-flex align-items-center mb-3">
-                  <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                  <input class="form-check-input" name="remember" type="checkbox" id="rememberMe" checked>
                   <label class="form-check-label mb-0 ms-3" for="rememberMe">Guardar sessão?</label>
                 </div>
                 <div class="text-center">

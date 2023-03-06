@@ -47,8 +47,8 @@
 
 
             <h1 class="mb-4 mt-n3">{{evento.nome}} </h1>
-            <small> {{evento.endereco}}</small>
-            <p class="text-capitalize mb-4">	{{evento.descricao}} </p>
+            <small class="text-bold"> {{evento.endereco}}</small>
+            <p class="text-capitalize mb-4 mt-2">	{{evento.descricao}} </p>
 
             <div class="row mb-6 mt-4">
               <div class="col-sm-4">
@@ -90,6 +90,7 @@
 
     <!-- END Blogs w/ 4 cards w/ image & text & link -->
     <div class="container">
+
       <h2 class="mb-3">Comentários</h2>
           {{--comentarios.reduce((acc, com) => acc+JSON.stringify(com)+',', '')--}}
           <div class="form-floating" x-data="$store.secao" >
@@ -116,6 +117,7 @@
   </div>
 
   <script>
+
     const socket = io()
 
     socket.on('novo:comentario', (data) => {

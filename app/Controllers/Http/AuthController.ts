@@ -9,13 +9,14 @@ export default class AuthController {
     return view.render('login')
   }
 
-  public async store({auth, request, response}) {
+  public async store({auth, request, response, session}) {
     const loginPayload = await request.validate(LoginValidator)
-
+    const rememberMe = request.input('remember') == 'on'?true:false
     try {
       console.log(loginPayload)
-      await auth.use('web').attempt(loginPayload.email, loginPayload.password)
+      await auth.use('web').attempt(loginPayload.email, loginPayload.password, rememberMe)
     }catch (e) {
+      session.flash({erro: 'Credenciais Inválidas'})
       return response.redirect().toRoute('auth.create')
     }
 

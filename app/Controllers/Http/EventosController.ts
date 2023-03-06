@@ -1,16 +1,21 @@
-import { HttpContext } from "@adonisjs/core/build/standalone";
 import Application from '@ioc:Adonis/Core/Application';
 import Evento from '../../Models/Evento'
 import EventoValidator from "App/Validators/EventoValidator";
 import Tipo from "App/Models/Tipo";
 import Cidade from "App/Models/Cidade";
-import Regiao from "Database/seeders/Regiao";
 import Usuario from '../../Models/Usuario';
 import Regioe from "App/Models/Regiao";
 import Database from "@ioc:Adonis/Lucid/Database";
-import Comentario from "App/Models/Comentario";
+import NodeGeocoder from 'node-geocoder';
+
+const options = {
+  provider: 'google',
+  apiKey: 'AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4',
+}
 
 export default class EventosController {
+
+  geocoder = NodeGeocoder(options);
 
   public async index({view}) : HttpContextContract {
     const eventos = await Evento.query().preload('tipo').preload('cidade')
@@ -72,10 +77,10 @@ export default class EventosController {
     const cidadesNomes = cidades.map((cidade)=>cidade.nome)
     const path = Application.tmpPath('/uploads')
     //return view.render('eventos/index', {eventos, path})
-    return view.render('eventos', {path, tipos, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
+    return view.render('eventos', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
   }
 
-  public async foto({view, response, params}) : HttpContextContract {
+  public async foto({params, response}) : HttpContextContract {
     response.header('Content-Type', 'image/gif');
     let file
     if(params.path == 'public')
@@ -122,10 +127,17 @@ export default class EventosController {
       evento.caixa = eventoPayload.caixa
       evento.descricao =  eventoPayload.descricao
       evento.endereco =  eventoPayload.endereco
+
+      const [geo] = await this.geocoder.geocode(evento.endereco)
+
+      evento.lat = geo.latitude
+      evento.lng = geo.longitude
       evento.save()
       return response.redirect().toRoute('eventos.index')
     } else {
       eventoPayload.foto.clientName = new Date().getTime().toString()+'.'+eventoPayload.foto.extname
+      const [geo] = await this.geocoder.geocode(eventoPayload.endereco)
+
       await Evento.create({
         nome: eventoPayload.nome,
         frequencia: eventoPayload.frequencia,
@@ -139,7 +151,9 @@ export default class EventosController {
         seguranca: eventoPayload.seguranca,
         caixa: eventoPayload.caixa,
         descricao: eventoPayload.descricao,
-        endereco: eventoPayload.endereco
+        endereco: eventoPayload.endereco,
+        lat: geo.latitude,
+        lng: geo.longitude
       })
       await eventoPayload.foto.move(Application.publicPath('images'))
       return response.redirect().toRoute('eventos.index')
@@ -210,4 +224,10 @@ export default class EventosController {
       await evento.related('usuarios').detach([user.id])
     return response.send({evento: request.input('eventoId'), usuario: request.input('userId')})
   }
+
+  public async getAll({response }): HttpContextContract {
+    const eventos = await Evento.query().preload('tipo').preload('cidade')
+    return response.send(eventos)
+  }
+
 }

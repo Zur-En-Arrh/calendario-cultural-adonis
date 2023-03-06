@@ -26,9 +26,11 @@ export default class EventoValidator {
    *    ```
    */
   public schema = schema.create({
-    nome: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
-    descricao: schema.string({}, [rules.trim(), rules.minLength(5), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç!?., ]*$)(?!.*[<>'"/;`%])/)]),
-    endereco: schema.string({}, [rules.trim(), rules.minLength(5), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùç!?., ]*$)(?!.*[<>'"/;`%])/)]),
+    nome: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùçêâôûî ]*$)(?!.*[<>'"/;`%])/)]),
+    descricao: schema.string(),
+    endereco: schema.string(),
+    //descricao: schema.string({}, [rules.trim(), rules.minLength(5), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùçêâôûî!-?., ]*$)(?!.*[<>'"/;`%])/)]),
+    //endereco: schema.string({}, [rules.trim(), rules.minLength(5), rules.regex(/^(?=[a-zA-Z0-9ãõñáéíóúàèìòùçêâôûî!-?., ]*$)(?!.*[<>'"/;`%])/)]),
     //cidade: schema.string({}, [rules.trim(), rules.escape(), rules.minLength(5), rules.maxLength(155), rules.regex(/^(?=[a-zA-Zãõñáéíóúàèìòùç ]*$)(?!.*[<>'"/;`%])/)]),
     cidadeId: schema.number(),
     frequencia: schema.enum(['quinzenal', 'mensal', 'anual']),

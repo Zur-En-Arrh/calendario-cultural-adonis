@@ -1,29 +1,160 @@
 @layout('layout_sem_footer')
 @section('conteudo')
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <div id="map"></div>
 
-    <!--
-      The `defer` attribute causes the callback to execute after the full HTML
-      document has been parsed. For non-blocking uses, avoiding race conditions,
-      and consistent behavior across browsers, consider loading using Promises
-      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-      -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4&callback=initMap&v=weekly"
-      defer
-    ></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <div style="height: 100vh;">
+      <div id="map" style="height: 100%;"></div>
+    </div>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4&callback=initMap&v=weekly" defer> </script>
+  <script src='https://code.jquery.com/jquery-1.12.0.min.js'></script>
+
+
+  <script>
+
+  let geocoder;
+  let urlEventos = '{{route('eventos.todos')}}'
+  let urlFoto = '{{route('eventos.foto', {path:'public', name:':img'})}}'
+  let endereco = '{{auth.user?.endereco}}'
+
+  let urlIcon = '{{route('eventos.foto', {path: 'resource',name:':img'})}}'//http://localhost:3333/images/resource/';
+
+
+  async function initMap() {
+    geocoder = new google.maps.Geocoder()
+    let req = await axios(urlEventos)
+    let eventos = req.data
+    // console.log(req)
+
+    // const myLatLng = { lat: {{auth.user.lat}}, lng: {{auth.user.lng}}};
+    const myLatLng = { lat: {{auth.user.lat}}, lng: {{auth.user.lng}} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 15,
+      center: myLatLng,
+    });
+
+  const locationButton = document.createElement("button");
+  locationButton.setAttribute("id", 'locationButton');
+  locationButton.innerHTML = "<i class='fa fa-map-marker'></i>&nbsp; Encontrar minha localização";
+  locationButton.classList.add("custom-map-control-button", "btn", "bg-gradient-primary", "w-auto");
+
+
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+    locationButton.addEventListener("click", () => {
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            const infoWindow = new google.maps.InfoWindow()
+            infoWindow.setPosition(pos);
+            infoWindow.setContent("<div style='height: 35px; border-radius: 3.5px;' class='bg-white p-2 border bold'><i class='fas fa-home'></i>&nbsp; Localização aproximada.</div>");
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    });
+
+
+    // new google.maps.Marker({
+    //   position: myLatLng,
+    //   map,
+    //   title: "Você mora aqui: " + endereco,
+    // });
+    eventos.forEach(evento => {
+        evento.visible = false
+        // console.log(evento.endereco)
+
+          // const content = `<img height="100px" widht="100px" src="${urlFoto.replace(':img', evento.foto)}">`;
+          //<a class="share-icon facebook" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://09e5-2804-14d-168a-9808-e4ef-56c2-e732-7f77.sa.ngrok.io/eventos/show/'+evento.id)}" target="_blank"><span class="fa fa-facebook"></span></a>
+
+          const content = `
+            <div id="evento-card" class="wrapper">
+
+              <div class="card radius shadowDepth1">
+                <div class="card__image border-tlr-radius">
+                  <img src="${urlFoto.replace(':img', evento.foto)}" alt="image" class="border-tlr-radius">
+                </div>
+
+                <div class="card__content card__padding">
+
+                  <div class="card__share">
+                      <div class="card__social d-flex justify-content-end">
+                          <a class="share-icon twitter" href="https://twitter.com/intent/tweet?text=${'http://localhost/eventos/show/'+evento.id+'%0AConheça '+evento.nome}" target="_blank"><span class="fa fa-twitter"></span></a>
+                      </div>
+                      <a id="share-${evento.id}" class="share-toggle share-icon" onclick="abrir('#share-'+${evento.id})"></a>
+                  </div>
+
+                  <div class="card__meta">
+                    <h5 style="font-size: 14px;" class="text-calendario">${(evento.tipo.nome)}</h5>
+                  </div>
+
+                  <article class="card__article mb-n4">
+                    <h6 style="font-size: 14px;">${(evento.nome)}</h6>
+                    <p style="font-size: 12px;">${(evento.descricao)?.substring(0, 54)+"..."}</p>
+                  </article>
+
+                </div>
+
+
+                <div class="card__action mb-2 ">
+                  <a href="http://127.0.0.1:3333/eventos/show/${(evento.id)}" target="_blank">
+                    <h6 style="font-size: 14px;">Ver Mais</h6>
+                  </a>
+                </div>
+
+
+              </div>
+
+            </div>
+                `;
+
+          const infoWindow = new google.maps.InfoWindow({content})
+
+          //console.log(evento.tipo, urlIcon.replace(':img', evento.tipo.icon_url));
+          var marker = new google.maps.Marker({
+              map: map,
+              title: evento.title,
+              icon: urlIcon.replace(':img', evento.tipo.icon_url),
+              position: {lat:evento.lat, lng:evento.lng}
+          })
+
+          // console.log(tiposIcones[evento.tipo_id], evento)
+
+          marker.addListener('click', () => {
+            if(evento.visible)
+              infoWindow.close()
+            else
+              infoWindow.open(map, marker)
+            evento.visible = !evento.visible
+          })
+
+    });
+
+
+
+  }
+
+  window.initMap = initMap;
+  </script>
+
 
     <script>
-    let map;
 
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8,
-      });
-    }
+      function abrir(id) {
+        console.log($(id))
+        $(id).parent().find( 'div' ).toggleClass( 'card__social--active' );
+        $(id).toggleClass('share-expanded');
+      }
 
-    window.initMap = initMap;
+
     </script>
-@end
+
+@endsection

@@ -1,9 +1,16 @@
+import NodeGeocoder from 'node-geocoder';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Usuario from '../../Models/Usuario'
 import Evento from 'App/Models/Evento'
 import UsuarioValidator from '../../Validators/UsuarioValidator'
 
+const options = {
+  provider: 'google',
+  apiKey: 'AIzaSyCQeareefn39XfUvF3pDMLIvXPCXZOpis4',
+}
 export default class UsuariosController {
+  geocoder = NodeGeocoder(options);
+
   public async create({view, request}) : HttpContextContract{
     const usuarios = await Usuario.all()
     return view.render('cadastro')
@@ -19,6 +26,10 @@ export default class UsuariosController {
   public async store({view, request, response}) : HttpContextContract {
     const userPayload = await request.validate(UsuarioValidator)
 
+    const [geo] = await this.geocoder.geocode(userPayload.endereco)
+
+    userPayload.lat = geo.latitude
+    userPayload.lng = geo.longitude
 
     let query = null
     const id = request.input('id')

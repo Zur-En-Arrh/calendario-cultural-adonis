@@ -54,6 +54,12 @@ export default class Evento extends BaseModel {
   @column()
   public endereco: string
 
+  @column()
+  public lat: number
+
+  @column()
+  public lng: number
+
   @hasOne(() => Cidade, {
     foreignKey: 'id',
     localKey: 'cidadeId',

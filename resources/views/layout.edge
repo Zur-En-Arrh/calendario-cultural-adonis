@@ -7,6 +7,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
 <!--     Fonts and icons     -->
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 <!-- Font Awesome Icons -->
@@ -15,6 +16,9 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+{{--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>--}}
+
 <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -93,19 +97,11 @@
         </li>
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('mapa.index')}}" target="_self">
             <i class="fa fa-map" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Mapa</p>
           </a>
         </li>
-
-        <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
-            <i class="fa fa-cog" aria-hidden="true"></i>
-            <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Configurações</p>
-          </a>
-        </li>
-
     </ul>
   </div>
 </div>
@@ -116,14 +112,13 @@
 
 <div id="conteudo">
 
-    @!section('conteudo')
-
+  @!section('conteudo')
 
 </div>
 
 
 <!-- Footer -->
-<footer id="footer_id" class="footer pt-5 mt-2 bg-calendario">
+<footer id="footer_id" class="footer pt-5 mt-n2 bg-calendario">
   <div class="container">
     <div class=" row">
       <div class="col-md-2 col-sm-6 col-6 mb-4">

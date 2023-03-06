@@ -20,35 +20,33 @@
       <div class="container mt-6">
         <!-- Button trigger modal -->
 
-        <section class="p-2" >
+     <section class="p-2" >
           <div class="container">
             <div class="row justify-space-between py-2">
             <h1 class="text-calendario text-center mb-5"> Encontre o evento perfeito para você. </h1>
-                <div class="container" >
-                  <div class="row"> 
-
+                <div class="container">
                   <form method="get" action="{{route('eventos.search')}}" class="d-flex">
-                    <div class="col-4 p-2">
-                        <div class="input-group input-group-dynamic mb-4">
-                          <span class="input-group-text"></span>
-                          <input class="form-control" name="busca" placeholder="Busca" type="text" >
-                        </div>
+                    <div class="row w-100">
+                      <div class="col-md-4 p-2">
+                          <div class="input-group input-group-dynamic mb-2">
+                            <span class="input-group-text"></span>
+                            <input class="form-control" name="busca" placeholder="Busca" type="text" >
+                          </div>
+                      </div>
+                      <div class="col-md-2 p-2">
+                            @!select({label: 'Regiao', name: 'regiao', options: regioesIds, texts: regioesNomes, classes: 'input-group input-group-outline border border-primary rounded'})
+                      </div>
+                      <div class="col-md-2 p-2">
+                            @!select({label: 'Cidade', name: 'cidade', options: cidadesIds, texts: cidadesNomes, classes: 'input-group input-group-outline border border-primary rounded'})
+                      </div>
+                      <div class="col-md-2 p-2 mb-2">
+                            @!select({label: 'Tipo', name: 'tipo', options: tiposIds, texts: tiposNomes, classes: 'input-group input-group-outline border border-primary rounded'})
+                      </div>
+                      <div class="col-md-2 text-center p-2">
+                          <button type="submit" class="btn bg-gradient-primary w-auto me-2"><i class="fas fa-search"></i>&nbsp; Buscar</button>
+                      </div>
                     </div>
-                    <div class="col-2 p-2">
-                          @!select({label: 'Regiao', name: 'regiao', options: regioesIds, texts: regioesNomes, classes: 'input-group input-group-outline border border-primary rounded'})
-                    </div>
-                    <div class="col-2 p-2">
-                          @!select({label: 'Cidade', name: 'cidade', options: cidadesIds, texts: cidadesNomes, classes: 'input-group input-group-outline border border-primary rounded'})
-                    </div>
-                    <div class="col-2 p-2">
-                          @!select({label: 'Tipo', name: 'tipo', options: tiposIds, texts: tiposNomes, classes: 'input-group input-group-outline border border-primary rounded'})
-                    </div>
-                    <div class="col-2 p-2">
-                        <button type="submit" class="btn bg-gradient-primary w-auto me-2"><i class="fas fa-search"></i>&nbsp; Buscar</button>
-                    </div>
-                    </form>
-
-                  </div>
+                  </form>
                 </div>
             </div>
           </div>
@@ -79,10 +77,11 @@
       <div class="row justify-space-between text-center py-2">
         <div class="col-12 mx-auto">
           <h4 class="text-calendario"> Não encontrou o'que estava procurando? </h4>
+          <a href="/eventos">
           <button class="btn bg-calendario btn-icon text-white" type="button">
               <i class="material-icons me-2" aria-hidden="true">favorite</i>
               Pesquisar outros eventos?
-          </button>
+          </button></a>
         </div>
       </div>
     </div>
