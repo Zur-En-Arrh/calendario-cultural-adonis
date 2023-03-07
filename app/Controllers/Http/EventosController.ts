@@ -17,6 +17,10 @@ export default class EventosController {
 
   geocoder = NodeGeocoder(options);
 
+  public async map({view}) : HttpContextContract {
+    return view.render('mapa')
+  }
+
   public async index({view}) : HttpContextContract {
     const eventos = await Evento.query().preload('tipo').preload('cidade')
     const tipos = {}

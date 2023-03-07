@@ -20,8 +20,8 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async ({ view }) => {
-  return view.render('welcome')
+Route.get('/', async ({ response }) => {
+  return response.redirect().toRoute('auth.create')
 })
 
 Route.get('/images/:path/:name', 'EventosController.foto').as('eventos.foto')
@@ -68,4 +68,4 @@ Route.get('/login', 'AuthController.create').as('auth.create')
 
 Route.post('/login', 'AuthController.store').as('auth.store')
 
-Route.get('/mapa', ({view}) => view.render('mapa')).as('mapa.index')
+Route.get('/mapa', 'EventosController.map').as('mapa.index')
