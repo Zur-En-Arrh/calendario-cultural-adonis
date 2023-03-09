@@ -68,4 +68,4 @@ Route.get('/login', 'AuthController.create').as('auth.create')
 
 Route.post('/login', 'AuthController.store').as('auth.store')
 
-Route.get('/mapa', 'EventosController.map').as('mapa.index')
+Route.get('/mapa', 'EventosController.map').as('mapa.index').middleware('auth:web')
