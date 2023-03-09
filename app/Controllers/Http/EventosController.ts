@@ -47,7 +47,7 @@ export default class EventosController {
   }
 
 
-  public async search({view, params, request}) : HttpContextContract {
+  public async search({params, request, view}) : HttpContextContract {
     console.log(params,request.all())
     let eventos = 'SELECT * FROM eventos'
     let where = false
@@ -67,9 +67,10 @@ export default class EventosController {
     if(request.input('cidade')){
       eventos += where ? ' AND cidade_id = ' + request.input('cidade') : ' WHERE cidade_id = ' + request.input('cidade')
     }
-
     eventos = await Database.rawQuery(eventos)
-
+    eventos.map(async (e) => {
+      e.cidade = await Cidade.find(e.cidade_id)
+    })
     const categorias = await Tipo.all()
     const cidades = await Cidade.all()
     const regioes = await Regioe.all()
@@ -81,7 +82,7 @@ export default class EventosController {
     const cidadesNomes = cidades.map((cidade)=>cidade.nome)
     const path = Application.tmpPath('/uploads')
     //return view.render('eventos/index', {eventos, path})
-    return view.render('eventos', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
+    return view.render('search', {path, eventos, tiposIds, tiposNomes, cidadesIds, cidadesNomes, regioesIds, regioesNomes})
   }
 
   public async foto({params, response}) : HttpContextContract {

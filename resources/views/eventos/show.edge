@@ -98,7 +98,7 @@
               <div x-data="{ current: {comentario: '', created_at: 'Agora', usuario: {nome: '{{auth.user?.nome}}'}, eventoId: {{evento.id}}, userId: {{auth.user.id}} } }">
               <textarea class="form-control border px-2" id="comentario" x-model="current.comentario" style="height: 100px;" placeholder="Deixe um comentário..."> </textarea>
               <!-- <label for="comentario">Deixe um comentário...</label> -->
-              <button class="btn btn-primary mt-3 mb-4 my-2" @click="await save(current); current.comentario =''">Enviar</button>
+              <button class="btn btn-primary mt-3 mb-4 my-2" @click="await save(current); current.comentario ='';">Enviar</button>
               </div>
             @endif
 
@@ -106,11 +106,6 @@
               @include('components/comentario')
             </template>
           </div>
-
-
-        {{-- @each(comentario in comentarios)
-          @include('components/comentario')
-        @end --}}
 
     </div>
 
@@ -122,14 +117,14 @@
 
     socket.on('novo:comentario', (data) => {
       //desenharComentario(data)
-      console.log(data)
-      if(data.eventoId == window.eventoId)
+      console.log('novo comentario', window.eventoId, data)
+      if(data.eventoId == window.eventoId) {
+        console.log('inseriu')
         window.comentarios.push(data)
-      console.log('Um novo comentario chegou', window.comentarios)
+      }
     })
 
     socket.on('mudanca:comentario', (data) => {
-      console.log('o que mudou', data)
       const p = document.getElementById('com-'+data.id)
       if(p)
         p.innerText = data.comentario
@@ -145,12 +140,10 @@
     })
 
     socket.on('delecao:comentario', (data) => {
-      console.log('Delecao', data)
       window.comentarios = window.comentarios.map(c => {
         if(c && c.id != data.id)
           return c
       })
-      console.log(window.comentarios, Alpine.store('secao').salvarLista(window.comentarios))
       const div = document.getElementById('div-'+data.id)
       if(div)
         div.parentElement.removeChild(div)
@@ -160,7 +153,7 @@
         Alpine.store('secao', {
           eventoId: {{evento.id}},
           init() {
-            const req = axios('http://localhost:3333/comentario/evento/{{evento.id}}')
+            const req = axios('{{route("comentario.evento", {"id":evento.id})}}')
               .then(res => {
                 this.comentarios = res.data
                 window.comentarios = this.comentarios
@@ -168,8 +161,9 @@
               })
           },
           comentarios: [],
-          async atualizar(obj, url) {
-            axios.post('http://localhost:3333'+url, obj)
+          async atualizar(obj) {
+            console.log('{{route("comentario.update", {id: ":id"})}}'.replace(':id', obj.id), {userId: obj.userId, eventoId: obj.eventoId, comentario: obj.comentario})
+            axios.post('{{route("comentario.update", {id: ":id"})}}'.replace(':id', obj.id), {userId: obj.userId, eventoId: obj.eventoId, comentario: obj.comentario})
               .then(res => {
                 console.log(res)
                 if(res.status == '200') {
@@ -179,8 +173,7 @@
 
           },
           async apagar(c) {
-            console.log('http://localhost:3333/comentario/delete/'+c.id)
-            axios('http://localhost:3333/comentario/delete/'+c.id)
+            axios('{{route("comentario.delete", {id:":id"})}}'.replace(":id", c.id))
               .then(res => {
                 console.log(res)
                 if(res.status == '200') {
@@ -200,7 +193,7 @@
 
     async function save(com) {
       console.log("salvando...", com)
-      const res = await axios.post('http://localhost:3333{{route('comentario.store')}}', com)
+      const res = await axios.post('{{route('comentario.store')}}', com)
       console.log("RESULTADO", res.data)
     }
 
@@ -208,15 +201,12 @@
 
 
     function favoritar(userId, eventoId, url, msg) {
-      console.log('cheguei aqui')
-      axios.post('http://localhost:3333'+url, {userId, eventoId})
+      const urlFav = '{{route("eventos.favorito")}}'
+      console.log(url)
+      axios.post(url, {eventoId, userId})
         .then(res => {
           console.log(res, msg)
         })
-    }
-
-    function desenharComentario(comentario) {
-
     }
   </script>
 

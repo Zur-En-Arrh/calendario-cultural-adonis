@@ -1,4 +1,4 @@
-    <div class="bg-light p-3 my-3" :id="divId" x-ref="comentario" x-data="{open: false, urlApagar: '{{route('comentario.delete', {id: 'id'})}}', divId: 'div-'+c.id, id: 'com-'+c.id, atual: {userId: c.user_id, eventoId: c.evento_id, ...c}}">
+    <div class="bg-light p-3 my-3" :id="divId" x-data="{open: false, divId: 'div-'+c.id, id: 'com-'+c.id, atual: {id: c.id, userId: c.userId, eventoId: c.eventoId, comentario: c.comentario}}">
       <h4 class="my-0" x-text="c.usuario.nome"> </h4>
       <i class="fa fa-clock"></i> <small class="my-0" x-text="c.dataFormatada"></small>
 
@@ -21,11 +21,10 @@
         <div>
           <textarea class="form-control bg-white mb-3" x-model="atual.comentario"></textarea>
           <a href="#" onclick="return false;" @click="open = !open"> <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Cancelar&nbsp;&nbsp;</a>
-          <a href="#" onclick="return false;" @click="atualizar(atual, '{{route('comentario.update', {id: 'id'})}}'.replace('id', c.id)); open = !open"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;Salvar</a>
+          <a href="#" onclick="return false;" @click="atualizar(atual); open = !open"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;Salvar</a>
         </div>
       </template>
     </div>
-
     {{--<h4>{{comentario.usuario.nome}} - {{comentario.createdAt}}</h4>
 
     @if(auth.user.id == comentario.userId)

@@ -16,9 +16,6 @@
   let urlFoto = '{{route('eventos.foto', {path:'public', name:':img'})}}'
   let endereco = '{{auth.user?.endereco}}'
 
-  let urlIcon = '{{route('eventos.foto', {path: 'resource',name:':img'})}}'//http://localhost:3333/images/resource/';
-
-
   async function initMap() {
     geocoder = new google.maps.Geocoder()
     let req = await axios(urlEventos)
@@ -118,11 +115,10 @@
 
           const infoWindow = new google.maps.InfoWindow({content})
 
-          //console.log(evento.tipo, urlIcon.replace(':img', evento.tipo.icon_url));
           var marker = new google.maps.Marker({
               map: map,
               title: evento.title,
-              icon: urlIcon.replace(':img', evento.tipo.icon_url),
+              icon: urlFoto.replace(':img', evento.tipo.icon_url),
               position: {lat:evento.lat, lng:evento.lng}
           })
 
