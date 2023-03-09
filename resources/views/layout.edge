@@ -15,6 +15,9 @@
 <!-- Material Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
+<link rel="icon" type="image/x-icon" href="{{route('eventos.foto', {path: 'public', name: 'favicon.ico'})}}">
+
+
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 {{--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>--}}
@@ -51,7 +54,7 @@
       <ul class="navbar-nav navbar-nav-hover ms-auto">
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('eventos.index')}}" target="_self">
             <i class="fa fa-home" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Home</p>
           </a>

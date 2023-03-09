@@ -9,6 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <!--     Fonts and icons     -->
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+
+<link rel="icon" type="image/x-icon" href="{{route('eventos.foto', {path: 'public', name: 'favicon.ico'})}}">
+
+
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 <!-- Material Icons -->
@@ -64,7 +68,7 @@
       <ul class="navbar-nav navbar-nav-hover ms-auto">
 
         <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="#" target="_self">
+          <a class="nav-link nav-link-icon me-2" href="{{route('eventos.index')}}" target="_self">
             <i class="fa fa-home" aria-hidden="true"></i>
             <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" >Home</p>
           </a>
