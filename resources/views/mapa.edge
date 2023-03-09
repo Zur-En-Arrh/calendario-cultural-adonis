@@ -102,7 +102,7 @@
 
 
                 <div class="card__action mb-2 ">
-                  <a href="http://127.0.0.1:3333/eventos/show/${(evento.id)}" target="_blank">
+                  <a href="${"{{route('eventos.show', {id: ':id'})}}".replace(':id', evento.id)}" target="_blank">
                     <h6 style="font-size: 14px;">Ver Mais</h6>
                   </a>
                 </div>
